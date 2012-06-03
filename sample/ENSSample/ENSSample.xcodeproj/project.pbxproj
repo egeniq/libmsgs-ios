@@ -1,0 +1,397 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		760D1A97157B86090076CF1E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 760D1A96157B86090076CF1E /* UIKit.framework */; };
+		760D1A99157B86090076CF1E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 760D1A98157B86090076CF1E /* Foundation.framework */; };
+		760D1A9B157B86090076CF1E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 760D1A9A157B86090076CF1E /* CoreGraphics.framework */; };
+		760D1AA1157B86090076CF1E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 760D1A9F157B86090076CF1E /* InfoPlist.strings */; };
+		760D1AA3157B86090076CF1E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D1AA2157B86090076CF1E /* main.m */; };
+		760D1AA7157B86090076CF1E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D1AA6157B86090076CF1E /* AppDelegate.m */; };
+		760D1ABA157B86820076CF1E /* EFRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D1AB7157B86820076CF1E /* EFRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		760D1ABB157B86820076CF1E /* ENSNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D1AB9157B86820076CF1E /* ENSNotificationManager.m */; };
+		760D1ABE157B86920076CF1E /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D1ABD157B86920076CF1E /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		760D1AC3157B86E10076CF1E /* EFError.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D1AC0157B86E10076CF1E /* EFError.m */; };
+		760D1AC4157B86E10076CF1E /* EFQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D1AC2157B86E10076CF1E /* EFQueue.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		760D1ACF157B8AE90076CF1E /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D1ACD157B8AE90076CF1E /* RootViewController.m */; };
+		760D1AD0157B8AE90076CF1E /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 760D1ACE157B8AE90076CF1E /* RootViewController.xib */; };
+		76835CAC157BABC300C69CC5 /* SubscriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76835CAA157BABC300C69CC5 /* SubscriptionViewController.m */; };
+		76835CAD157BABC300C69CC5 /* SubscriptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76835CAB157BABC300C69CC5 /* SubscriptionViewController.xib */; };
+		76835CB1157BB75800C69CC5 /* ENSSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 76835CB0157BB75800C69CC5 /* ENSSubscription.m */; };
+		7687BB7C157B970C00BF7CE1 /* SubscriptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7687BB7A157B970C00BF7CE1 /* SubscriptionsViewController.m */; };
+		7687BB7D157B970C00BF7CE1 /* SubscriptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7687BB7B157B970C00BF7CE1 /* SubscriptionsViewController.xib */; };
+		7687BB87157B9B0500BF7CE1 /* SubscribeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7687BB85157B9B0500BF7CE1 /* SubscribeViewController.m */; };
+		7687BB88157B9B0500BF7CE1 /* SubscribeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7687BB86157B9B0500BF7CE1 /* SubscribeViewController.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		760D1A92157B86090076CF1E /* ENSSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ENSSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		760D1A96157B86090076CF1E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		760D1A98157B86090076CF1E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		760D1A9A157B86090076CF1E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		760D1A9E157B86090076CF1E /* ENSSample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ENSSample-Info.plist"; sourceTree = "<group>"; };
+		760D1AA0157B86090076CF1E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		760D1AA2157B86090076CF1E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		760D1AA4157B86090076CF1E /* ENSSample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ENSSample-Prefix.pch"; sourceTree = "<group>"; };
+		760D1AA5157B86090076CF1E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		760D1AA6157B86090076CF1E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		760D1AB6157B86820076CF1E /* EFRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EFRequest.h; path = ../../../src/EFRequest.h; sourceTree = "<group>"; };
+		760D1AB7157B86820076CF1E /* EFRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EFRequest.m; path = ../../../src/EFRequest.m; sourceTree = "<group>"; };
+		760D1AB8157B86820076CF1E /* ENSNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ENSNotificationManager.h; path = ../../../src/ENSNotificationManager.h; sourceTree = "<group>"; };
+		760D1AB9157B86820076CF1E /* ENSNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ENSNotificationManager.m; path = ../../../src/ENSNotificationManager.m; sourceTree = "<group>"; };
+		760D1ABC157B86920076CF1E /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = External/JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
+		760D1ABD157B86920076CF1E /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = External/JSONKit/JSONKit.m; sourceTree = SOURCE_ROOT; };
+		760D1ABF157B86E10076CF1E /* EFError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EFError.h; path = ../../../src/EFError.h; sourceTree = "<group>"; };
+		760D1AC0157B86E10076CF1E /* EFError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EFError.m; path = ../../../src/EFError.m; sourceTree = "<group>"; };
+		760D1AC1157B86E10076CF1E /* EFQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EFQueue.h; path = ../../../src/EFQueue.h; sourceTree = "<group>"; };
+		760D1AC2157B86E10076CF1E /* EFQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EFQueue.m; path = ../../../src/EFQueue.m; sourceTree = "<group>"; };
+		760D1ACC157B8AE90076CF1E /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		760D1ACD157B8AE90076CF1E /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		760D1ACE157B8AE90076CF1E /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
+		76835CA9157BABC300C69CC5 /* SubscriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscriptionViewController.h; sourceTree = "<group>"; };
+		76835CAA157BABC300C69CC5 /* SubscriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscriptionViewController.m; sourceTree = "<group>"; };
+		76835CAB157BABC300C69CC5 /* SubscriptionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SubscriptionViewController.xib; sourceTree = "<group>"; };
+		76835CAF157BB75800C69CC5 /* ENSSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ENSSubscription.h; sourceTree = "<group>"; };
+		76835CB0157BB75800C69CC5 /* ENSSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ENSSubscription.m; sourceTree = "<group>"; };
+		7687BB79157B970C00BF7CE1 /* SubscriptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscriptionsViewController.h; sourceTree = "<group>"; };
+		7687BB7A157B970C00BF7CE1 /* SubscriptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscriptionsViewController.m; sourceTree = "<group>"; };
+		7687BB7B157B970C00BF7CE1 /* SubscriptionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SubscriptionsViewController.xib; sourceTree = "<group>"; };
+		7687BB84157B9B0500BF7CE1 /* SubscribeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscribeViewController.h; sourceTree = "<group>"; };
+		7687BB85157B9B0500BF7CE1 /* SubscribeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscribeViewController.m; sourceTree = "<group>"; };
+		7687BB86157B9B0500BF7CE1 /* SubscribeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SubscribeViewController.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		760D1A8F157B86090076CF1E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				760D1A97157B86090076CF1E /* UIKit.framework in Frameworks */,
+				760D1A99157B86090076CF1E /* Foundation.framework in Frameworks */,
+				760D1A9B157B86090076CF1E /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		760D1A87157B86090076CF1E = {
+			isa = PBXGroup;
+			children = (
+				760D1AB3157B86600076CF1E /* External */,
+				760D1A9C157B86090076CF1E /* ENSSample */,
+				760D1A95157B86090076CF1E /* Frameworks */,
+				760D1A93157B86090076CF1E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		760D1A93157B86090076CF1E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				760D1A92157B86090076CF1E /* ENSSample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		760D1A95157B86090076CF1E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				760D1A96157B86090076CF1E /* UIKit.framework */,
+				760D1A98157B86090076CF1E /* Foundation.framework */,
+				760D1A9A157B86090076CF1E /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		760D1A9C157B86090076CF1E /* ENSSample */ = {
+			isa = PBXGroup;
+			children = (
+				7687BB82157B972800BF7CE1 /* General */,
+				7687BB80157B971700BF7CE1 /* Resources */,
+				7687BB7F157B971100BF7CE1 /* ViewControllers */,
+			);
+			path = ENSSample;
+			sourceTree = "<group>";
+		};
+		760D1AB3157B86600076CF1E /* External */ = {
+			isa = PBXGroup;
+			children = (
+				760D1AB5157B86730076CF1E /* ENS */,
+				760D1AB4157B866B0076CF1E /* JSONKit */,
+			);
+			name = External;
+			path = ../NotificationManagerSampleApplication/Application;
+			sourceTree = "<group>";
+		};
+		760D1AB4157B866B0076CF1E /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				760D1ABC157B86920076CF1E /* JSONKit.h */,
+				760D1ABD157B86920076CF1E /* JSONKit.m */,
+			);
+			name = JSONKit;
+			sourceTree = "<group>";
+		};
+		760D1AB5157B86730076CF1E /* ENS */ = {
+			isa = PBXGroup;
+			children = (
+				760D1ABF157B86E10076CF1E /* EFError.h */,
+				760D1AC0157B86E10076CF1E /* EFError.m */,
+				760D1AC1157B86E10076CF1E /* EFQueue.h */,
+				760D1AC2157B86E10076CF1E /* EFQueue.m */,
+				760D1AB6157B86820076CF1E /* EFRequest.h */,
+				760D1AB7157B86820076CF1E /* EFRequest.m */,
+				760D1AB8157B86820076CF1E /* ENSNotificationManager.h */,
+				760D1AB9157B86820076CF1E /* ENSNotificationManager.m */,
+				76835CAF157BB75800C69CC5 /* ENSSubscription.h */,
+				76835CB0157BB75800C69CC5 /* ENSSubscription.m */,
+			);
+			name = ENS;
+			sourceTree = "<group>";
+		};
+		7687BB7F157B971100BF7CE1 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				7687BB79157B970C00BF7CE1 /* SubscriptionsViewController.h */,
+				7687BB7A157B970C00BF7CE1 /* SubscriptionsViewController.m */,
+				760D1ACC157B8AE90076CF1E /* RootViewController.h */,
+				760D1ACD157B8AE90076CF1E /* RootViewController.m */,
+				7687BB84157B9B0500BF7CE1 /* SubscribeViewController.h */,
+				7687BB85157B9B0500BF7CE1 /* SubscribeViewController.m */,
+				76835CA9157BABC300C69CC5 /* SubscriptionViewController.h */,
+				76835CAA157BABC300C69CC5 /* SubscriptionViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		7687BB80157B971700BF7CE1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7687BB83157B974900BF7CE1 /* General */,
+				7687BB81157B971C00BF7CE1 /* Views */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		7687BB81157B971C00BF7CE1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				76835CAB157BABC300C69CC5 /* SubscriptionViewController.xib */,
+				7687BB7B157B970C00BF7CE1 /* SubscriptionsViewController.xib */,
+				760D1ACE157B8AE90076CF1E /* RootViewController.xib */,
+				7687BB86157B9B0500BF7CE1 /* SubscribeViewController.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		7687BB82157B972800BF7CE1 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				760D1AA5157B86090076CF1E /* AppDelegate.h */,
+				760D1AA6157B86090076CF1E /* AppDelegate.m */,
+			);
+			name = General;
+			sourceTree = "<group>";
+		};
+		7687BB83157B974900BF7CE1 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				760D1A9E157B86090076CF1E /* ENSSample-Info.plist */,
+				760D1A9F157B86090076CF1E /* InfoPlist.strings */,
+				760D1AA2157B86090076CF1E /* main.m */,
+				760D1AA4157B86090076CF1E /* ENSSample-Prefix.pch */,
+			);
+			name = General;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		760D1A91157B86090076CF1E /* ENSSample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 760D1AB0157B86090076CF1E /* Build configuration list for PBXNativeTarget "ENSSample" */;
+			buildPhases = (
+				760D1A8E157B86090076CF1E /* Sources */,
+				760D1A8F157B86090076CF1E /* Frameworks */,
+				760D1A90157B86090076CF1E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ENSSample;
+			productName = ENSSample;
+			productReference = 760D1A92157B86090076CF1E /* ENSSample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		760D1A89157B86090076CF1E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 760D1A8C157B86090076CF1E /* Build configuration list for PBXProject "ENSSample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 760D1A87157B86090076CF1E;
+			productRefGroup = 760D1A93157B86090076CF1E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				760D1A91157B86090076CF1E /* ENSSample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		760D1A90157B86090076CF1E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				760D1AA1157B86090076CF1E /* InfoPlist.strings in Resources */,
+				760D1AD0157B8AE90076CF1E /* RootViewController.xib in Resources */,
+				7687BB7D157B970C00BF7CE1 /* SubscriptionsViewController.xib in Resources */,
+				7687BB88157B9B0500BF7CE1 /* SubscribeViewController.xib in Resources */,
+				76835CAD157BABC300C69CC5 /* SubscriptionViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		760D1A8E157B86090076CF1E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				760D1AA3157B86090076CF1E /* main.m in Sources */,
+				760D1AA7157B86090076CF1E /* AppDelegate.m in Sources */,
+				760D1ABA157B86820076CF1E /* EFRequest.m in Sources */,
+				760D1ABB157B86820076CF1E /* ENSNotificationManager.m in Sources */,
+				760D1ABE157B86920076CF1E /* JSONKit.m in Sources */,
+				760D1AC3157B86E10076CF1E /* EFError.m in Sources */,
+				760D1AC4157B86E10076CF1E /* EFQueue.m in Sources */,
+				760D1ACF157B8AE90076CF1E /* RootViewController.m in Sources */,
+				7687BB7C157B970C00BF7CE1 /* SubscriptionsViewController.m in Sources */,
+				7687BB87157B9B0500BF7CE1 /* SubscribeViewController.m in Sources */,
+				76835CAC157BABC300C69CC5 /* SubscriptionViewController.m in Sources */,
+				76835CB1157BB75800C69CC5 /* ENSSubscription.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		760D1A9F157B86090076CF1E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				760D1AA0157B86090076CF1E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		760D1AAE157B86090076CF1E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		760D1AAF157B86090076CF1E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		760D1AB1157B86090076CF1E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ENSSample/ENSSample-Prefix.pch";
+				INFOPLIST_FILE = "ENSSample/ENSSample-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		760D1AB2157B86090076CF1E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ENSSample/ENSSample-Prefix.pch";
+				INFOPLIST_FILE = "ENSSample/ENSSample-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		760D1A8C157B86090076CF1E /* Build configuration list for PBXProject "ENSSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				760D1AAE157B86090076CF1E /* Debug */,
+				760D1AAF157B86090076CF1E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		760D1AB0157B86090076CF1E /* Build configuration list for PBXNativeTarget "ENSSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				760D1AB1157B86090076CF1E /* Debug */,
+				760D1AB2157B86090076CF1E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 760D1A89157B86090076CF1E /* Project object */;
+}
