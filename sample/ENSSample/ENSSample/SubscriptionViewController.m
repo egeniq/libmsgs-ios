@@ -45,8 +45,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     if (self.subscription) {
-        NSLog(@"%@", self.subscription);
-        NSLog(@"%@", self.subscription.dateEnd);
         self.channelIdentifierLabel.text = self.subscription.channelId;
         self.dateEndLabel.text = self.subscription.dateEnd;
         self.dateStartLabel.text = self.subscription.dateStart;
