@@ -41,7 +41,7 @@
         self.subscriptions = subscriptions;
         [self.tableView reloadData];
     } onError:^(NSString *errorCode, NSString *errorMessage) {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel title") otherButtonTitles:nil, nil] show];
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"Ok") otherButtonTitles:nil, nil] show];
     }];
 }
 

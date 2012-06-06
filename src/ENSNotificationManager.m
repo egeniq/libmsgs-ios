@@ -71,10 +71,10 @@ static ENSNotificationManager *sharedInstance = nil;
 	if (escapedNotificationToken != nil) {
         location = [NSString stringWithFormat:@"%@/%@", location, @";update"];
 	}  
-
+    
     NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:[self.appId dataUsingEncoding:NSUTF8StringEncoding], @"appId", 
-                                                                        [@"ios" dataUsingEncoding:NSUTF8StringEncoding], @"deviceFamily",
-                                                                        [self.deviceToken dataUsingEncoding:NSUTF8StringEncoding], @"deviceToken", nil];  
+                            [@"ios" dataUsingEncoding:NSUTF8StringEncoding], @"deviceFamily",
+                            [self.deviceToken dataUsingEncoding:NSUTF8StringEncoding], @"deviceToken", nil];  
     
     [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
         self.notificationToken = [object valueForKey:@"notificationToken"];
@@ -181,7 +181,7 @@ static ENSNotificationManager *sharedInstance = nil;
 }
 
 - (void)unsubscribeFromChannel:(NSString *)channelIdentifier {
-   
+    
 }
 
 - (void)unsubscribeAll {
@@ -195,25 +195,27 @@ static ENSNotificationManager *sharedInstance = nil;
     EFRequest *request = [EFRequest requestWithURL:URL preProcessHandler:^id(NSURLResponse *response, NSData *data, NSError *__autoreleasing *error) {
         NSArray *result = [[JSONDecoder decoder] objectWithData:data];
         if (((NSHTTPURLResponse *)response).statusCode >= 400) {
+            NSDictionary *userInfo = nil;
             if ([result valueForKey:@"code"] && [result valueForKey:@"message"]) {
-                return [[NSDictionary alloc] initWithObjectsAndKeys:[result valueForKey:@"code"], @"code", [result valueForKey:@"message"], @"message", nil];
+                userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:[result valueForKey:@"code"], @"code", [result valueForKey:@"message"], @"message", nil];
             } else {
-                return [[NSDictionary alloc] initWithObjectsAndKeys:@"unkown_error", @"code", [NSString stringWithFormat:@"An unknown error occured: Error code %d", ((NSHTTPURLResponse *)response).statusCode], @"message", nil];
+                userInfo =  [[NSDictionary alloc] initWithObjectsAndKeys:@"unkown_error", @"code", [NSString stringWithFormat:@"An unknown error occured: Error code %d", ((NSHTTPURLResponse *)response).statusCode], @"message", nil];
             }
+            *error = [NSError errorWithDomain:EFErrorDomain code:EFUnknownError userInfo:userInfo];
         }
         return result;
     } resultHandler:^(NSURLResponse *response, id result, NSError *error) {
         if (error) { 
-            onError(@"unkown_error", [NSString stringWithFormat:@"An unknown error occured: Error message %@", error.localizedDescription]);
-        } else { 
-            if ([result valueForKey:@"code"] && [result valueForKey:@"message"]) {
-                onError([result valueForKey:@"code"], [result valueForKey:@"message"]);
+            if ([[error userInfo] isKindOfClass:[NSDictionary class]]) { 
+                onError([[error userInfo] valueForKey:@"code"], [[error userInfo] valueForKey:@"message"]);
             } else {
-                onComplete(result);
+                onError(@"unkown_error", [NSString stringWithFormat:@"An unkown error occured: %@", [error localizedDescription]]);
             }
+        } else { 
+            onComplete(result);
         }
     }];
-                                                                                          
+    
     [request setAllHTTPPostFields:params];
     [request setHTTPMethod:@"POST"];
     [request start];
@@ -232,32 +234,33 @@ static ENSNotificationManager *sharedInstance = nil;
     
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.tokenExchangeURL, location]];
     EFRequest *request = [EFRequest requestWithURL:URL preProcessHandler:^id(NSURLResponse *response, NSData *data, NSError *__autoreleasing *error) {
-        NSDictionary *result = [[JSONDecoder decoder] objectWithData:data];
-        if (((NSHTTPURLResponse *)response).statusCode >= 400) {
+        NSArray *result = [[JSONDecoder decoder] objectWithData:data];
+        if (((NSHTTPURLResponse *)response).statusCode >= 400) {          
+            NSDictionary *userInfo = nil;
             if ([result valueForKey:@"code"] && [result valueForKey:@"message"]) {
-                return [[NSDictionary alloc] initWithObjectsAndKeys:[result valueForKey:@"code"], @"code", [result valueForKey:@"message"], @"message", nil];
+                userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:[result valueForKey:@"code"], @"code", [result valueForKey:@"message"], @"message", nil];
             } else {
-                return [[NSDictionary alloc] initWithObjectsAndKeys:@"unkown_error", @"code", [NSString stringWithFormat:@"An unknown error occured: Error code %d", ((NSHTTPURLResponse *)response).statusCode], @"message", nil];
+                userInfo =  [[NSDictionary alloc] initWithObjectsAndKeys:@"unkown_error", @"code", [NSString stringWithFormat:@"An unknown error occured: Error code %d", ((NSHTTPURLResponse *)response).statusCode], @"message", nil];
             }
+            *error = [NSError errorWithDomain:EFErrorDomain code:EFUnknownError userInfo:userInfo];
         }
         return result;
     } resultHandler:^(NSURLResponse *response, id result, NSError *error) {
-        if (error) { 
-            onError(@"unkown_error", [NSString stringWithFormat:@"An unknown error occured: Error message %@", error.localizedDescription]);
-        } else { 
-            // @TODO Figure out how to check this properly
-            if (![result valueForKey:@"code"] && [result valueForKey:@"message"]) {
-                onError([result valueForKey:@"code"], [result valueForKey:@"message"]);
+        if (error) {
+            if ([[error userInfo] isKindOfClass:[NSDictionary class]]) { 
+                onError([[error userInfo] valueForKey:@"code"], [[error userInfo] valueForKey:@"message"]);
             } else {
-                onComplete(result);
+                onError(@"unkown_error", [NSString stringWithFormat:@"An unkown error occured: %@", [error localizedDescription]]);
             }
+        } else {
+            onComplete(result);
         }
     }];
     
     [request setHTTPMethod:@"GET"];
     [request start];    
 }
-                                                                                      
+
 #pragma mark -
 #pragma mark Getters and Setters
 - (void)setNotificationToken:(NSString *)notificationToken {
@@ -285,7 +288,7 @@ static ENSNotificationManager *sharedInstance = nil;
 - (NSString *)tokenExchangeURL {
     return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENSDeviceTokenExchangeURL"];
 }
-     
+
 - (NSString *)appId {
     return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENSAppId"];
 }
@@ -312,7 +315,7 @@ static ENSNotificationManager *sharedInstance = nil;
 - (NSString *)hexStringFromDeviceToken:(NSData *)deviceToken {
     const unsigned char *bytes = (const unsigned char *)[deviceToken bytes];
     NSUInteger nbBytes =  [deviceToken length];
-
+    
     NSUInteger strLen = 2 * nbBytes;
     
     NSMutableString *hex = [[NSMutableString alloc] initWithCapacity:strLen];

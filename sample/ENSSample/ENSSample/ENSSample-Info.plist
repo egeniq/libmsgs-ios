@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>ENSSample.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>io.msgs.ios.sample</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -25,7 +25,7 @@
 	<key>ENSAppId</key>
 	<string>notificationserver</string>
 	<key>ENSDeviceTokenExchangeURL</key>
-	<string>http://api.notificationserver.thijsdamen.dyndns.org</string>
+	<string>http://api.msgs.io/</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>

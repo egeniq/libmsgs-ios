@@ -33,7 +33,6 @@
     [self.window makeKeyAndVisible];
     
     [self setupPushNotificationsForApplication:application];
-    
     return YES;
 }
 
@@ -76,16 +75,28 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-	[[ENSNotificationManager sharedInstance] registerDevice:deviceToken];
+	[[ENSNotificationManager sharedInstance] registerDevice:deviceToken onComplete:^(NSString *deviceToken) {
+
+    } onError:^(NSString *errorCode, NSString *errorMessage) {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"Ok") otherButtonTitles:nil, nil] show];
+    }];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-
+    NSLog(@"%@", [error localizedDescription]);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)info {
-
+    NSString *message = nil;
+    id alert = [info objectForKey:@"aps"];
+    if ([alert isKindOfClass:[NSString class]]) {
+        message = alert;
+    } else if ([alert isKindOfClass:[NSDictionary class]]) {
+        message = [alert objectForKey:@"alert"];
+    }
+    if (message) {
+        [[[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"Ok") otherButtonTitles:nil, nil] show];
+    }
 }
-
 
 @end

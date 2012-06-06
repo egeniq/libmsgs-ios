@@ -11,10 +11,10 @@
 @interface ENSSubscription : NSObject
 
 @property (nonatomic, strong) NSString *channelId;
-@property (nonatomic, strong) NSString *dateEnd;
-@property (nonatomic, strong) NSString *dateStart;
-@property (nonatomic, strong) NSString *timeEnd;
-@property (nonatomic, strong) NSString *timeStart;
+@property (nonatomic, strong) NSDate *dateEnd;
+@property (nonatomic, strong) NSDate *dateStart;
+@property (nonatomic, strong) NSDate *timeEnd;
+@property (nonatomic, strong) NSDate *timeStart;
 @property (nonatomic, strong) NSString *dayOfWeekEnd;
 @property (nonatomic, strong) NSString *dayOfWeekStart;
 

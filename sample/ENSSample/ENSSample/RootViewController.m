@@ -17,13 +17,9 @@
 - (IBAction)currentSubscriptions;
 - (IBAction)subscribe;
 
-@property (nonatomic, retain) IBOutlet UILabel *notRegisteredLabel;
-
 @end
 
 @implementation RootViewController
-
-@synthesize notRegisteredLabel = notRegisteredLabel_;
 
 - (id)init {
     self = [super initWithNibName:@"RootViewController" bundle:nil];
@@ -44,15 +40,5 @@
     SubscribeViewController *viewController = [[SubscribeViewController alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
 }
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    if ([[ENSNotificationManager sharedInstance] deviceIsRegistered]) {
-        self.notRegisteredLabel.hidden = YES;
-    }
-}
-
-
 
 @end
