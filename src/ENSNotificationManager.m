@@ -89,13 +89,15 @@ static ENSNotificationManager *sharedInstance = nil;
 }
 
 - (void)registerDeviceAndSubscribeToChannel:(NSString *)channelIdentifier onComplete:(void (^)(NSString *deviceToken, NSString *subscriptionIdentifier))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
-    
+#warning Method not implemented
+    NSAssert(NO, @"Method not implemented: %s", __PRETTY_FUNCTION__);
 }
 
 #pragma mark -
 #pragma mark Unregister method
 - (void)unregisterDevice {
-    
+#warning Method not implemented
+    NSAssert(NO, @"Method not implemented: %s", __PRETTY_FUNCTION__);
 }
 
 #pragma mark -
@@ -171,21 +173,25 @@ static ENSNotificationManager *sharedInstance = nil;
 }
 
 - (void)subscriptionsForChannel:(NSString *)channelIdentifier onComplete:(void (^)(NSArray *))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
-    
+#warning Method not implemented
+    NSAssert(NO, @"Method not implemented: %s", __PRETTY_FUNCTION__);
 }
 
 #pragma mark -
 #pragma mark Unsubscribe Methods
 - (void)unsubscribe:(NSString *)subscriptionIdentifier {
-    
+#warning Method not implemented
+    NSAssert(NO, @"Method not implemented: %s", __PRETTY_FUNCTION__);
 }
 
 - (void)unsubscribeFromChannel:(NSString *)channelIdentifier {
-    
+#warning Method not implemented
+    NSAssert(NO, @"Method not implemented: %s", __PRETTY_FUNCTION__);
 }
 
 - (void)unsubscribeAll {
-    
+#warning Method not implemented
+    NSAssert(NO, @"Method not implemented: %s", __PRETTY_FUNCTION__);
 }
 
 #pragma mark -
