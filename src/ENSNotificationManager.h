@@ -15,7 +15,6 @@
 
 - (void)registerDevice:(NSData *)deviceToken;
 - (void)registerDevice:(NSData *)deviceToken onComplete:(void(^)(NSString *deviceToken))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
-- (void)registerDeviceAndSubscribeToChannel:(NSString *)channelIdentifier onComplete:(void(^)(NSString *deviceToken, NSString *subscriptionIdentifier))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
 
 - (void)subscribeToChannel:(NSString *)channelIdentifier onComplete:(void(^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
 - (void)subscribeToChannel:(NSString *)channelIdentifier startDate:(NSDate *)startDate endDate:(NSDate *)endDate onComplete:(void(^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
@@ -26,10 +25,10 @@
 - (void)subscriptionsWithOnComplete:(void(^)(NSArray *subscriptions))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
 - (void)subscriptionsForChannel:(NSString *)channelIdentifier onComplete:(void(^)(NSArray *subscriptions))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
 
-- (void)unsubscribe:(NSString *)subscriptionIdentifier;
-- (void)unsubscribeFromChannel:(NSString *)channelIdentifier;
-- (void)unsubscribeAll;
-- (void)unregisterDevice;
+- (void)unsubscribe:(NSString *)subscriptionIdentifier onComplete:(void(^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
+- (void)unsubscribeFromChannel:(NSString *)channelIdentifier onComplete:(void(^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
+- (void)unsubscribeAllOnComplete:(void(^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
+- (void)unregisterDeviceOnComplete:(void (^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
 
 - (BOOL)deviceIsRegistered;
 
