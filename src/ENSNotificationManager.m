@@ -41,7 +41,6 @@ static ENSNotificationManager *sharedInstance = nil;
 @synthesize notificationToken = notificationToken_;
 @synthesize deviceToken = deviceToken_;
 @synthesize tokenExchangeURL = tokenExchangeURL_;
-@synthesize appId = appId_;
 
 #pragma mark -
 #pragma mark Register Methods
@@ -88,16 +87,22 @@ static ENSNotificationManager *sharedInstance = nil;
     }];
 }
 
-- (void)registerDeviceAndSubscribeToChannel:(NSString *)channelIdentifier onComplete:(void (^)(NSString *deviceToken, NSString *subscriptionIdentifier))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
-#warning Method not implemented
-    NSAssert(NO, @"Method not implemented: %s", __PRETTY_FUNCTION__);
-}
-
 #pragma mark -
 #pragma mark Unregister method
-- (void)unregisterDevice {
-#warning Method not implemented
-    NSAssert(NO, @"Method not implemented: %s", __PRETTY_FUNCTION__);
+- (void)unregisterDeviceOnComplete:(void (^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    NSString *location = @"subscribers/;delete";
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:3];
+    [params setValue:[self.appId dataUsingEncoding:NSUTF8StringEncoding] forKey:@"appId"];
+    [params setValue:[self.notificationToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"notificationToken"];
+    [params setValue:[self.deviceToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"deviceToken"];
+
+    [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
+        self.deviceToken = nil;
+        self.notificationToken = nil;
+        onComplete(YES);
+    } onError:^(NSString *errorCode, NSString *errorMessage) {
+        onError(errorCode, errorMessage);
+    }];
 }
 
 #pragma mark -
@@ -158,6 +163,15 @@ static ENSNotificationManager *sharedInstance = nil;
 #pragma mark -
 #pragma mark Subscription List Methods
 - (void)subscriptionsWithOnComplete:(void (^)(NSArray *))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    if (!self.appId) {
+        onError(@"Missing app id", @"Missing app id is not good!");
+        return;
+    }
+    if (!self.notificationToken) {
+        onError(@"Missing notificationToken", @"Missing notificationToken is not good!");
+        return;
+    }
+    
     NSString *location = [NSString stringWithFormat:@"subscriptions/%@/%@", self.appId, self.notificationToken];
     NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:self.appId, @"appId", self.notificationToken, @"notificationToken", nil];
     [self loadArrayForLocation:location params:params onComplete:^(NSArray *list) {
@@ -173,25 +187,60 @@ static ENSNotificationManager *sharedInstance = nil;
 }
 
 - (void)subscriptionsForChannel:(NSString *)channelIdentifier onComplete:(void (^)(NSArray *))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
-#warning Method not implemented
-    NSAssert(NO, @"Method not implemented: %s", __PRETTY_FUNCTION__);
+    NSString *location = [NSString stringWithFormat:@"channels/%@", channelIdentifier];
+    [self loadArrayForLocation:location params:nil onComplete:^(NSArray *list) {
+        NSMutableArray *subscriptions = [[NSMutableArray alloc] init];
+        for (NSDictionary *subscriptionDictionary in list) {
+            ENSSubscription *subscription = [[ENSSubscription alloc] initWithDictionary:subscriptionDictionary];
+            [subscriptions insertObject:subscription atIndex:[subscriptions count]];
+        }
+        onComplete(subscriptions);
+    } onError:^(NSString *errorCode, NSString *errorMessage) {
+        onError(errorCode, errorMessage);
+    }];
 }
 
 #pragma mark -
 #pragma mark Unsubscribe Methods
-- (void)unsubscribe:(NSString *)subscriptionIdentifier {
-#warning Method not implemented
-    NSAssert(NO, @"Method not implemented: %s", __PRETTY_FUNCTION__);
+- (void)unsubscribe:(NSString *)subscriptionIdentifier onComplete:(void(^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    NSString *location = @"subscriptions/;delete";
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:3];
+    [params setValue:[self.appId dataUsingEncoding:NSUTF8StringEncoding] forKey:@"appId"];
+    [params setValue:[self.notificationToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"notificationToken"];
+    [params setValue:[subscriptionIdentifier dataUsingEncoding:NSUTF8StringEncoding] forKey:@"subscriptionId"];
+
+    [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
+        onComplete(YES);
+    } onError:^(NSString *errorCode, NSString *errorMessage) {
+        onError(errorCode, errorMessage);
+    }];
 }
 
-- (void)unsubscribeFromChannel:(NSString *)channelIdentifier {
-#warning Method not implemented
-    NSAssert(NO, @"Method not implemented: %s", __PRETTY_FUNCTION__);
+- (void)unsubscribeFromChannel:(NSString *)channelIdentifier onComplete:(void(^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    NSString *location = @"subscriptions/;delete";
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:3];
+    [params setValue:[self.appId dataUsingEncoding:NSUTF8StringEncoding] forKey:@"appId"];
+    [params setValue:[self.notificationToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"notificationToken"];
+    [params setValue:[channelIdentifier dataUsingEncoding:NSUTF8StringEncoding] forKey:@"channelId"];
+
+    [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
+        onComplete(YES);
+    } onError:^(NSString *errorCode, NSString *errorMessage) {
+        onError(errorCode, errorMessage);
+    }];
 }
 
-- (void)unsubscribeAll {
-#warning Method not implemented
-    NSAssert(NO, @"Method not implemented: %s", __PRETTY_FUNCTION__);
+- (void)unsubscribeAllOnComplete:(void(^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    NSString *location = @"subscriptions/;delete";
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:2];
+    [params setValue:[self.appId dataUsingEncoding:NSUTF8StringEncoding] forKey:@"appId"];
+    [params setValue:[self.notificationToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"notificationToken"];
+
+    [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
+        onComplete(YES);
+    } onError:^(NSString *errorCode, NSString *errorMessage) {
+        onError(errorCode, errorMessage);
+    }];
 }
 
 #pragma mark -
