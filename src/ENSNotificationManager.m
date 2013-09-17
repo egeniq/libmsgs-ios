@@ -172,8 +172,8 @@ static ENSNotificationManager *sharedInstance = nil;
         return;
     }
     
-    NSString *location = [NSString stringWithFormat:@"subscriptions/%@/%@", self.appId, self.notificationToken];
-    NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:self.appId, @"appId", self.notificationToken, @"notificationToken", nil];
+    NSString *location = [NSString stringWithFormat:@"subscriptions/%@/%@", [self URLEncodeString:self.appId encoding:NSUTF8StringEncoding], [self URLEncodeString:self.notificationToken encoding:NSUTF8StringEncoding]];
+    NSDictionary *params = @{};
     [self loadArrayForLocation:location params:params onComplete:^(NSArray *list) {
         NSMutableArray *subscriptions = [[NSMutableArray alloc] init];
         for (NSDictionary *subscriptionDictionary in list) {
