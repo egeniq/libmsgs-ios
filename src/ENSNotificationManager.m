@@ -50,30 +50,28 @@ static ENSNotificationManager *sharedInstance = nil;
 
 - (void)registerDevice:(NSData *)deviceToken onComplete:(void (^)(NSString *notificationToken))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     NSString *escapedDeviceToken = [self hexStringFromDeviceToken:deviceToken];
-	NSString *escapedNotificationToken = [self.notificationToken stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 	
-    if ([[self deviceToken] isEqualToString:escapedDeviceToken] && [[self notificationToken] isEqualToString:escapedNotificationToken]) {
-        // The notification token we are about to send is the same as for the last successful attempt,
-        // stopping to reduce server load
+    if ([self.deviceToken isEqualToString:escapedDeviceToken] && self.notificationToken != nil) {
+        // Same device token as previous time and we already have a notification token, stopping to reduce server load
         return;
-    } else if ([[self deviceToken] isEqualToString:escapedDeviceToken]) {
-        // Same device token, but different notification token, tell server
     } else {
-        // Different device token (perhaps user synced preferences to another/new device),
-        // store new device token and
-        // delete notification token as it must be invalid.
-        [self setDeviceToken:escapedDeviceToken];
-        [self setNotificationToken:nil];
+        // Different device token (perhaps user synced preferences to another/new device)
+        self.deviceToken = escapedDeviceToken;
     }
     
-    NSString *location = @"subscribers";
-	if (escapedNotificationToken != nil) {
-        location = [NSString stringWithFormat:@"%@/%@", location, @";update"];
-	}  
+    NSMutableDictionary *params =
+        [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+            [self.appId dataUsingEncoding:NSUTF8StringEncoding], @"appId",
+            [@"ios" dataUsingEncoding:NSUTF8StringEncoding], @"deviceFamily",
+            [self.deviceToken dataUsingEncoding:NSUTF8StringEncoding], @"deviceToken", nil
+        ];
+
     
-    NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys:[self.appId dataUsingEncoding:NSUTF8StringEncoding], @"appId", 
-                            [@"ios" dataUsingEncoding:NSUTF8StringEncoding], @"deviceFamily",
-                            [self.deviceToken dataUsingEncoding:NSUTF8StringEncoding], @"deviceToken", nil];  
+    NSString *location = @"subscribers";
+	if (self.notificationToken != nil) {
+        location = [NSString stringWithFormat:@"%@/%@", location, @";update"];
+        [params setObject:[self.notificationToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"notificationToken"];
+	}
     
     [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
         self.notificationToken = [object valueForKey:@"notificationToken"];
