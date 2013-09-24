@@ -8,7 +8,6 @@
 
 #import "ENSNotificationManager.h"
 #import "EFRequest.h"
-#import "JSONKit.h"
 #import "ENSSubscription.h"
 
 static ENSNotificationManager *sharedInstance = nil;
@@ -248,7 +247,7 @@ static ENSNotificationManager *sharedInstance = nil;
 - (void)postToLocation:(NSString *)location params:(NSDictionary *)params onComplete:(void(^)(NSDictionary *object))onComplete onError:(void(^)(NSString *errorCode, NSString *errorMessage))onError {
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.tokenExchangeURL, location]];
     EFRequest *request = [EFRequest requestWithURL:URL preProcessHandler:^id(NSURLResponse *response, NSData *data, NSError *__autoreleasing *error) {
-        NSArray *result = [[JSONDecoder decoder] objectWithData:data];
+        NSArray *result = [NSJSONSerialization JSONObjectWithData:data options:0 error:error];
         if (((NSHTTPURLResponse *)response).statusCode >= 400) {
             NSDictionary *userInfo = nil;
             if ([result valueForKey:@"code"] && [result valueForKey:@"message"]) {
@@ -289,7 +288,7 @@ static ENSNotificationManager *sharedInstance = nil;
     
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.tokenExchangeURL, location]];
     EFRequest *request = [EFRequest requestWithURL:URL preProcessHandler:^id(NSURLResponse *response, NSData *data, NSError *__autoreleasing *error) {
-        NSArray *result = [[JSONDecoder decoder] objectWithData:data];
+        NSArray *result = [NSJSONSerialization JSONObjectWithData:data options:0 error:error];
         if (((NSHTTPURLResponse *)response).statusCode >= 400) {          
             NSDictionary *userInfo = nil;
             if ([result valueForKey:@"code"] && [result valueForKey:@"message"]) {
