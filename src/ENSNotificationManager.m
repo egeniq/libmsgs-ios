@@ -7,8 +7,8 @@
 //
 
 #import "ENSNotificationManager.h"
-#import "EFRequest.h"
 #import "ENSSubscription.h"
+#import "AFNetworking.h"
 
 static ENSNotificationManager *sharedInstance = nil;
 
@@ -16,33 +16,40 @@ static ENSNotificationManager *sharedInstance = nil;
 
 @property (nonatomic, strong) NSString *notificationToken;
 @property (nonatomic, strong) NSString *deviceToken;
-@property (nonatomic, strong, readonly) NSString *tokenExchangeURL;
-@property (nonatomic, strong, readonly) NSString *appId;
-
-- (NSString *)hexStringFromDeviceToken:(NSData *)deviceToken;
-- (NSString *)URLEncodeString:(NSString *)value encoding:(NSStringEncoding)encoding;
-
-- (void)setNotificationToken:(NSString *)notificationToken;
-- (NSString *)notificationToken;
-
-- (void)setDeviceToken:(NSString *)deviceToken;
-- (NSString *)deviceToken;
-
-- (NSString *)tokenExchangeURL;
-
-- (void)postToLocation:(NSString *)location params:(NSDictionary *)params onComplete:(void(^)(NSDictionary *object))onComplete onError:(void(^)(NSString *errorCode, NSString *errorMessage))onError;
-- (void)loadArrayForLocation:(NSString *)location params:(NSDictionary *)params onComplete:(void(^)(NSArray *list))onComplete onError:(void(^)(NSString *errorCode, NSString *errorMessage))onError;
+@property (nonatomic, strong) AFHTTPClient *client;
 
 @end
 
 @implementation ENSNotificationManager
 
-@synthesize notificationToken = notificationToken_;
-@synthesize deviceToken = deviceToken_;
-@synthesize tokenExchangeURL = tokenExchangeURL_;
+#pragma mark -
+#pragma mark Initialization
+
++ (ENSNotificationManager *)sharedInstance {
+    @synchronized(self) {
+        if (sharedInstance == nil) {
+            sharedInstance = [[ENSNotificationManager alloc] init];
+        }
+    }
+    return sharedInstance;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self != nil) {
+        self.client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:self.apiURL]];
+        [self.client registerHTTPOperationClass:[AFJSONRequestOperation class]];
+        [self.client setDefaultHeader:@"Accept" value:@"application/json"];
+        self.client.parameterEncoding = AFFormURLParameterEncoding;
+        [self.client.operationQueue setMaxConcurrentOperationCount:1];
+    }
+    
+    return self;
+}
 
 #pragma mark -
 #pragma mark Register Methods
+
 - (void)registerDevice:(NSData *)deviceToken {
     [self registerDevice:deviceToken onComplete:nil onError:nil];
 }
@@ -86,7 +93,8 @@ static ENSNotificationManager *sharedInstance = nil;
 
 #pragma mark -
 #pragma mark Unregister method
-- (void)unregisterDeviceOnComplete:(void (^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+
+- (void)unregisterDeviceOnComplete:(void (^)())onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     NSString *location = @"subscribers/;delete";
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:3];
     [params setValue:[self.appId dataUsingEncoding:NSUTF8StringEncoding] forKey:@"appId"];
@@ -96,7 +104,7 @@ static ENSNotificationManager *sharedInstance = nil;
     [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
         self.deviceToken = nil;
         self.notificationToken = nil;
-        onComplete(YES);
+        onComplete();
     } onError:^(NSString *errorCode, NSString *errorMessage) {
         onError(errorCode, errorMessage);
     }];
@@ -104,23 +112,24 @@ static ENSNotificationManager *sharedInstance = nil;
 
 #pragma mark -
 #pragma mark Subscribe Methods
-- (void)subscribeToChannel:(NSString *)channelIdentifier onComplete:(void (^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+
+- (void)subscribeToChannel:(NSString *)channelIdentifier onComplete:(void (^)(NSString *subscriptionId))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     [self subscribeToChannel:channelIdentifier startDate:nil endDate:nil startTime:nil endTime:nil startDayOfWeek:nil endDayOfWeek:nil onComplete:onComplete onError:onError];
 }
 
-- (void)subscribeToChannel:(NSString *)channelIdentifier startDate:(NSDate *)startDate endDate:(NSDate *)endDate onComplete:(void (^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+- (void)subscribeToChannel:(NSString *)channelIdentifier startDate:(NSDate *)startDate endDate:(NSDate *)endDate onComplete:(void (^)(NSString *subscriptionId))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     [self subscribeToChannel:channelIdentifier startDate:startDate endDate:endDate startTime:nil endTime:nil startDayOfWeek:nil endDayOfWeek:nil onComplete:onComplete onError:onError];    
 }
 
-- (void)subscribeToChannel:(NSString *)channelIdentifier startTime:(NSDate *)startTime endTime:(NSDate *)endTime onComplete:(void (^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+- (void)subscribeToChannel:(NSString *)channelIdentifier startTime:(NSDate *)startTime endTime:(NSDate *)endTime onComplete:(void (^)(NSString *subscriptionId))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     [self subscribeToChannel:channelIdentifier startDate:nil endDate:nil startTime:startTime endTime:endTime startDayOfWeek:nil endDayOfWeek:nil onComplete:onComplete onError:onError];
 }
 
-- (void)subscribeToChannel:(NSString *)channelIdentifier startDayOfWeek:(NSNumber *)startDayOfWeek endDayOfWeek:(NSNumber *)endDayOfWeek onComplete:(void (^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+- (void)subscribeToChannel:(NSString *)channelIdentifier startDayOfWeek:(NSNumber *)startDayOfWeek endDayOfWeek:(NSNumber *)endDayOfWeek onComplete:(void (^)(NSString *subscriptionId))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     [self subscribeToChannel:channelIdentifier startDate:nil endDate:nil startTime:nil endTime:nil startDayOfWeek:startDayOfWeek endDayOfWeek:endDayOfWeek onComplete:onComplete onError:onError];
 }
 
-- (void)subscribeToChannel:(NSString *)channelIdentifier startDate:(NSDate *)startDate endDate:(NSDate *)endDate startTime:(NSDate *)startTime endTime:(NSDate *)endTime startDayOfWeek:(NSNumber *)startDayOfWeek endDayOfWeek:(NSNumber *)endDayOfWeek onComplete:(void (^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+- (void)subscribeToChannel:(NSString *)channelIdentifier startDate:(NSDate *)startDate endDate:(NSDate *)endDate startTime:(NSDate *)startTime endTime:(NSDate *)endTime startDayOfWeek:(NSNumber *)startDayOfWeek endDayOfWeek:(NSNumber *)endDayOfWeek onComplete:(void (^)(NSString *subscriptionId))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     NSDateFormatter *dateDateFormatter = [[NSDateFormatter alloc] init];
     [dateDateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSDateFormatter *timeDateFormatter = [[NSDateFormatter alloc] init];
@@ -128,30 +137,30 @@ static ENSNotificationManager *sharedInstance = nil;
     
     NSString *location = @"subscriptions";
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:10];
-    [params setValue:[self.appId dataUsingEncoding:NSUTF8StringEncoding] forKey:@"appId"];
-    [params setValue:[self.notificationToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"notificationToken"];
-    [params setValue:[channelIdentifier dataUsingEncoding:NSUTF8StringEncoding] forKey:@"channelId"];
+    params[@"appId"] = self.appId;
+    params[@"notificationToken"] = self.notificationToken;
+    params[@"channelId"] = channelIdentifier;
     if (startDate != nil) {
-        [params setValue:[[dateDateFormatter stringFromDate:startDate] dataUsingEncoding:NSUTF8StringEncoding] forKey:@"dateStart"];
+        params[@"dateStart"] = [dateDateFormatter stringFromDate:startDate];
     }
     if (endDate != nil) {
-        [params setValue:[[dateDateFormatter stringFromDate:endDate] dataUsingEncoding:NSUTF8StringEncoding] forKey:@"dateEnd"];
+        params[@"dateEnd"] = [dateDateFormatter stringFromDate:endDate];
     }
     if (startTime != nil) {
-        [params setValue:[[timeDateFormatter stringFromDate:startTime] dataUsingEncoding:NSUTF8StringEncoding] forKey:@"timeStart"];
+        params[@"timeStart"] = [timeDateFormatter stringFromDate:startTime];
     }
     if (endTime != nil) {
-        [params setValue:[[timeDateFormatter stringFromDate:endTime] dataUsingEncoding:NSUTF8StringEncoding] forKey:@"timeEnd"];
+        params[@"timeEnd"] = [timeDateFormatter stringFromDate:endTime];
     }
     if (startDayOfWeek != nil) {
-        [params setValue:[[startDayOfWeek stringValue] dataUsingEncoding:NSUTF8StringEncoding] forKey:@"dowStart"];
+        params[@"dowStart"] = [startDayOfWeek stringValue];
     }
     if (endDayOfWeek != nil) {
-        [params setValue:[[endDayOfWeek stringValue] dataUsingEncoding:NSUTF8StringEncoding] forKey:@"dowEnd"];
+        params[@"dowEnd"] = [endDayOfWeek stringValue];
     }
     
-    [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
-        onComplete(YES);
+    [self postToLocation:location params:params onComplete:^(NSDictionary *result) {
+        onComplete(result[@"subscriptionId"]);
     } onError:^(NSString *errorCode, NSString *errorMessage) {
         onError(errorCode, errorMessage);
     }];
@@ -159,6 +168,7 @@ static ENSNotificationManager *sharedInstance = nil;
 
 #pragma mark -
 #pragma mark Subscription List Methods
+
 - (void)subscriptionsWithOnComplete:(void (^)(NSArray *))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     if (!self.appId) {
         onError(@"Missing app id", @"Missing app id is not good!");
@@ -199,12 +209,13 @@ static ENSNotificationManager *sharedInstance = nil;
 
 #pragma mark -
 #pragma mark Unsubscribe Methods
-- (void)unsubscribe:(NSString *)subscriptionIdentifier onComplete:(void(^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+
+- (void)unsubscribe:(NSString *)subscriptionIdentifier onComplete:(void(^)())onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     NSString *location = @"subscriptions/;delete";
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:3];
-    [params setValue:[self.appId dataUsingEncoding:NSUTF8StringEncoding] forKey:@"appId"];
-    [params setValue:[self.notificationToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"notificationToken"];
-    [params setValue:[subscriptionIdentifier dataUsingEncoding:NSUTF8StringEncoding] forKey:@"subscriptionId"];
+    params[@"appId"] = self.appId;
+    params[@"notificationToken"] = self.notificationToken;
+    params[@"subscriptionId"] = subscriptionIdentifier;
 
     [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
         onComplete(YES);
@@ -213,12 +224,12 @@ static ENSNotificationManager *sharedInstance = nil;
     }];
 }
 
-- (void)unsubscribeFromChannel:(NSString *)channelIdentifier onComplete:(void(^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+- (void)unsubscribeFromChannel:(NSString *)channelIdentifier onComplete:(void(^)())onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     NSString *location = @"subscriptions/;delete";
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:3];
-    [params setValue:[self.appId dataUsingEncoding:NSUTF8StringEncoding] forKey:@"appId"];
-    [params setValue:[self.notificationToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"notificationToken"];
-    [params setValue:[channelIdentifier dataUsingEncoding:NSUTF8StringEncoding] forKey:@"channelId"];
+    params[@"appId"] = self.appId;
+    params[@"notificationToken"] = self.notificationToken;
+    params[@"channelId"] = channelIdentifier;
 
     [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
         onComplete(YES);
@@ -227,11 +238,11 @@ static ENSNotificationManager *sharedInstance = nil;
     }];
 }
 
-- (void)unsubscribeAllOnComplete:(void(^)(BOOL complete))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+- (void)unsubscribeAllOnComplete:(void(^)())onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     NSString *location = @"subscriptions/;delete";
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:2];
-    [params setValue:[self.appId dataUsingEncoding:NSUTF8StringEncoding] forKey:@"appId"];
-    [params setValue:[self.notificationToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"notificationToken"];
+    params[@"appId"] = self.appId;
+    params[@"notificationToken"] = self.notificationToken;
 
     [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
         onComplete(YES);
@@ -242,79 +253,40 @@ static ENSNotificationManager *sharedInstance = nil;
 
 #pragma mark -
 #pragma mark Connection Methods
-- (void)postToLocation:(NSString *)location params:(NSDictionary *)params onComplete:(void(^)(NSDictionary *object))onComplete onError:(void(^)(NSString *errorCode, NSString *errorMessage))onError {
-    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.tokenExchangeURL, location]];
-    EFRequest *request = [EFRequest requestWithURL:URL preProcessHandler:^id(NSURLResponse *response, NSData *data, NSError *__autoreleasing *error) {
-        NSArray *result = [NSJSONSerialization JSONObjectWithData:data options:0 error:error];
-        if (((NSHTTPURLResponse *)response).statusCode >= 400) {
-            NSDictionary *userInfo = nil;
-            if ([result valueForKey:@"code"] && [result valueForKey:@"message"]) {
-                userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:[result valueForKey:@"code"], @"code", [result valueForKey:@"message"], @"message", nil];
-            } else {
-                userInfo =  [[NSDictionary alloc] initWithObjectsAndKeys:@"unkown_error", @"code", [NSString stringWithFormat:@"An unknown error occured: Error code %d", ((NSHTTPURLResponse *)response).statusCode], @"message", nil];
-            }
-            *error = [NSError errorWithDomain:EFErrorDomain code:EFUnknownError userInfo:userInfo];
-        }
-        return result;
-    } resultHandler:^(NSURLResponse *response, id result, NSError *error) {
-        if (error) { 
-            if ([[error userInfo] isKindOfClass:[NSDictionary class]]) { 
-                onError([[error userInfo] valueForKey:@"code"], [[error userInfo] valueForKey:@"message"]);
-            } else {
-                onError(@"unkown_error", [NSString stringWithFormat:@"An unkown error occured: %@", [error localizedDescription]]);
-            }
-        } else { 
-            onComplete(result);
+
+- (void)postToLocation:(NSString *)location params:(NSDictionary *)params onComplete:(void(^)(id result))onComplete onError:(void(^)(NSString *errorCode, NSString *errorMessage))onError {
+    NSURLRequest *request = [self.client requestWithMethod:@"POST" path:location parameters:params];
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id result) {
+        onComplete(result);
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id result) {
+        if (result != nil) {
+            onError(result[@"code"], result[@"message"]);
+        } else {
+            onError(@"unkown_error", [NSString stringWithFormat:@"An unkown error occured: %@", [error localizedDescription]]);
         }
     }];
     
-    [request setAllHTTPPostFields:params];
-    [request setHTTPMethod:@"POST"];
-    [request start];
+    [self.client enqueueHTTPRequestOperation:operation];
 }
 
 - (void)loadArrayForLocation:(NSString *)location params:(NSDictionary *)params onComplete:(void(^)(NSArray *list))onComplete onError:(void(^)(NSString *errorCode, NSString *errorMessage))onError {
-    NSString *queryString = @"";
-    for (NSString *field in [params keyEnumerator]) {
-        NSString *value = [[params valueForKey:field] description];
-        if ([queryString length] > 0) { 
-            queryString = [NSString stringWithFormat:@"%@&%@=%@", queryString, field, [self URLEncodeString:value encoding:NSUTF8StringEncoding]];
+    NSURLRequest *request = [self.client requestWithMethod:@"GET" path:location parameters:params];
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id result) {
+        onComplete((NSArray *)result);
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id result) {
+        if (result != nil) {
+            onError(result[@"code"], result[@"message"]);
         } else {
-            queryString = [NSString stringWithFormat:@"%@?%@=%@", queryString, field, [self URLEncodeString:value encoding:NSUTF8StringEncoding]];
-        }
-    }
-    
-    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.tokenExchangeURL, location]];
-    EFRequest *request = [EFRequest requestWithURL:URL preProcessHandler:^id(NSURLResponse *response, NSData *data, NSError *__autoreleasing *error) {
-        NSArray *result = [NSJSONSerialization JSONObjectWithData:data options:0 error:error];
-        if (((NSHTTPURLResponse *)response).statusCode >= 400) {          
-            NSDictionary *userInfo = nil;
-            if ([result valueForKey:@"code"] && [result valueForKey:@"message"]) {
-                userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:[result valueForKey:@"code"], @"code", [result valueForKey:@"message"], @"message", nil];
-            } else {
-                userInfo =  [[NSDictionary alloc] initWithObjectsAndKeys:@"unkown_error", @"code", [NSString stringWithFormat:@"An unknown error occured: Error code %d", ((NSHTTPURLResponse *)response).statusCode], @"message", nil];
-            }
-            *error = [NSError errorWithDomain:EFErrorDomain code:EFUnknownError userInfo:userInfo];
-        }
-        return result;
-    } resultHandler:^(NSURLResponse *response, id result, NSError *error) {
-        if (error) {
-            if ([[error userInfo] isKindOfClass:[NSDictionary class]]) { 
-                onError([[error userInfo] valueForKey:@"code"], [[error userInfo] valueForKey:@"message"]);
-            } else {
-                onError(@"unkown_error", [NSString stringWithFormat:@"An unkown error occured: %@", [error localizedDescription]]);
-            }
-        } else {
-            onComplete(result);
+            onError(@"unkown_error", [NSString stringWithFormat:@"An unkown error occured: %@", [error localizedDescription]]);
         }
     }];
     
-    [request setHTTPMethod:@"GET"];
-    [request start];    
+    [self.client enqueueHTTPRequestOperation:operation];
 }
 
 #pragma mark -
 #pragma mark Getters and Setters
+
 - (void)setNotificationToken:(NSString *)notificationToken {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setValue:notificationToken forKey:@"ENSNotificationToken"];
@@ -337,8 +309,12 @@ static ENSNotificationManager *sharedInstance = nil;
 	return [defaults stringForKey:@"ENSDeviceToken"];
 }
 
-- (NSString *)tokenExchangeURL {
-    return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENSDeviceTokenExchangeURL"];
+- (NSString *)apiURL {
+    if ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENSAPIURL"] != nil) {
+        return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENSAPIURL"];
+    } else {
+        return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENSDeviceTokenExchangeURL"];
+    }
 }
 
 - (NSString *)appId {
@@ -347,23 +323,14 @@ static ENSNotificationManager *sharedInstance = nil;
 
 #pragma mark -
 #pragma mark Convenience Methods
+
 - (BOOL)deviceIsRegistered {
     return (self.notificationToken != nil && self.deviceToken != nil);
 }
 
 #pragma mark -
-#pragma mark Singleton Methods
-+ (ENSNotificationManager *)sharedInstance {
-    @synchronized(self) {
-        if (sharedInstance == nil) {
-            sharedInstance = [[ENSNotificationManager alloc] init];
-        }
-    }
-    return sharedInstance;
-}
-
-#pragma mark -
 #pragma mark Conversion Methods
+
 - (NSString *)hexStringFromDeviceToken:(NSData *)deviceToken {
     const unsigned char *bytes = (const unsigned char *)[deviceToken bytes];
     NSUInteger nbBytes =  [deviceToken length];
