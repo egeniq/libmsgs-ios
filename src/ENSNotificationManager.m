@@ -409,13 +409,13 @@ static ENSNotificationManager *sharedInstance = nil;
 
 - (void)setUpdatedAt:(NSDate *)updatedAt {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setDouble:[updatedAt timeIntervalSince1970] forKey:@"ENSUpdatedAt"];
+    [defaults setObject:updatedAt forKey:@"ENSUpdatedAt"];
 	[defaults synchronize];
 }
 
 - (NSDate *)updatedAt {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    return [defaults objectForKey:@"ENSUpdatedAt"] == nil ? nil : [NSDate dateWithTimeIntervalSince1970:[defaults doubleForKey:@"ENSUpdatedAt"]];
+    return [defaults objectForKey:@"ENSUpdatedAt"];
 }
 
 - (NSString *)apiURL {
