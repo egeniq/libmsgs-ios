@@ -65,7 +65,7 @@ static ENSNotificationManager *sharedInstance = nil;
     }
     
     NSString *escapedDeviceToken = [self hexStringFromDeviceToken:deviceToken];
-	
+    
     if ([self.deviceToken isEqualToString:escapedDeviceToken] && self.notificationToken != nil) {
         // Same device token as previous time and we already have a notification token,
         // stopping to reduce server load unless the notification token on file is too old
@@ -83,10 +83,10 @@ static ENSNotificationManager *sharedInstance = nil;
     params[@"deviceToken"] = self.deviceToken;
     
     NSString *location = @"subscribers";
-	if (self.notificationToken != nil) {
+    if (self.notificationToken != nil) {
         location = [NSString stringWithFormat:@"%@/%@", location, @";update"];
         params[@"notificationToken"] = self.notificationToken;
-	}
+    }
     
     [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
         self.updatedAt = [NSDate date];
@@ -386,35 +386,35 @@ static ENSNotificationManager *sharedInstance = nil;
 #pragma mark Getters and Setters
 
 - (void)setNotificationToken:(NSString *)notificationToken {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setValue:notificationToken forKey:@"ENSNotificationToken"];
-	[defaults synchronize];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setValue:notificationToken forKey:@"ENSNotificationToken"];
+    [defaults synchronize];
 }
 
 - (NSString *)notificationToken {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	return [defaults stringForKey:@"ENSNotificationToken"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults stringForKey:@"ENSNotificationToken"];
 }
 
 - (void)setDeviceToken:(NSString *)deviceToken {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setValue:deviceToken forKey:@"ENSDeviceToken"];
-	[defaults synchronize];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setValue:deviceToken forKey:@"ENSDeviceToken"];
+    [defaults synchronize];
 }
 
 - (NSString *)deviceToken {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	return [defaults stringForKey:@"ENSDeviceToken"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults stringForKey:@"ENSDeviceToken"];
 }
 
 - (void)setUpdatedAt:(NSDate *)updatedAt {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:updatedAt forKey:@"ENSUpdatedAt"];
-	[defaults synchronize];
+    [defaults synchronize];
 }
 
 - (NSDate *)updatedAt {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     return [defaults objectForKey:@"ENSUpdatedAt"];
 }
 
