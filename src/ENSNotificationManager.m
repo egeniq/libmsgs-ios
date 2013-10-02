@@ -10,6 +10,8 @@
 #import "ENSSubscription.h"
 #import "AFNetworking.h"
 
+
+static const NSTimeInterval kENSNotificationManagerTokenTimeout = 259200.0; // 3 days
 static ENSNotificationManager *sharedInstance = nil;
 
 @interface ENSNotificationManager ()
@@ -55,32 +57,44 @@ static ENSNotificationManager *sharedInstance = nil;
 }
 
 - (void)registerDevice:(NSData *)deviceToken onComplete:(void (^)(NSString *notificationToken))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    if (!self.appId) {
+        if (onError != nil) {
+            onError(@"no_app_id", @"Missing app id.");
+        }
+        return;
+    }
+    
     NSString *escapedDeviceToken = [self hexStringFromDeviceToken:deviceToken];
 	
     if ([self.deviceToken isEqualToString:escapedDeviceToken] && self.notificationToken != nil) {
-        // Same device token as previous time and we already have a notification token, stopping to reduce server load
-        return;
+        // Same device token as previous time and we already have a notification token,
+        // stopping to reduce server load unless the notification token on file is too old
+        if (self.updatedAt != nil && [[NSDate date] timeIntervalSinceDate:self.updatedAt] < kENSNotificationManagerTokenTimeout) {
+            return;
+        }
     } else {
         // Different device token (perhaps user synced preferences to another/new device)
         self.deviceToken = escapedDeviceToken;
     }
     
-    NSMutableDictionary *params =
-        [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-            [self.appId dataUsingEncoding:NSUTF8StringEncoding], @"appId",
-            [@"ios" dataUsingEncoding:NSUTF8StringEncoding], @"deviceFamily",
-            [self.deviceToken dataUsingEncoding:NSUTF8StringEncoding], @"deviceToken", nil
-        ];
-
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    params[@"appId"] = self.appId;
+    params[@"deviceFamily"] = @"ios";
+    params[@"deviceToken"] = self.deviceToken;
     
     NSString *location = @"subscribers";
 	if (self.notificationToken != nil) {
         location = [NSString stringWithFormat:@"%@/%@", location, @";update"];
-        [params setObject:[self.notificationToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"notificationToken"];
+        params[@"notificationToken"] = self.notificationToken;
 	}
     
     [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
-        self.notificationToken = [object valueForKey:@"notificationToken"];
+        self.updatedAt = [NSDate date];
+        
+        if (object != nil && [object valueForKey:@"notificationToken"] != nil) {
+            self.notificationToken = [object valueForKey:@"notificationToken"];
+        }
+        
         if (onComplete != nil) {
             onComplete(self.notificationToken);
         }
@@ -95,11 +109,26 @@ static ENSNotificationManager *sharedInstance = nil;
 #pragma mark Unregister method
 
 - (void)unregisterDeviceOnComplete:(void (^)())onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    if (!self.appId) {
+        if (onError != nil) {
+            onError(@"no_app_id", @"Missing app id.");
+        }
+        return;
+    }
+    if (!self.notificationToken) {
+        if (onError != nil) {
+            onError(@"no_notification_token", @"Missing notification token.");
+        }
+        return;
+    }
+    
     NSString *location = @"subscribers/;delete";
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:3];
-    [params setValue:[self.appId dataUsingEncoding:NSUTF8StringEncoding] forKey:@"appId"];
-    [params setValue:[self.notificationToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"notificationToken"];
-    [params setValue:[self.deviceToken dataUsingEncoding:NSUTF8StringEncoding] forKey:@"deviceToken"];
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    params[@"appId"] = self.appId;
+    params[@"deviceFamily"] = @"ios";
+    params[@"deviceToken"] = self.deviceToken;
+    params[@"notificationToken"] = self.notificationToken;
 
     [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
         self.deviceToken = nil;
@@ -130,6 +159,19 @@ static ENSNotificationManager *sharedInstance = nil;
 }
 
 - (void)subscribeToChannel:(NSString *)channelIdentifier startDate:(NSDate *)startDate endDate:(NSDate *)endDate startTime:(NSDate *)startTime endTime:(NSDate *)endTime startDayOfWeek:(NSNumber *)startDayOfWeek endDayOfWeek:(NSNumber *)endDayOfWeek onComplete:(void (^)(NSString *subscriptionId))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    if (!self.appId) {
+        if (onError != nil) {
+            onError(@"no_app_id", @"Missing app id.");
+        }
+        return;
+    }
+    if (!self.notificationToken) {
+        if (onError != nil) {
+            onError(@"no_notification_token", @"Missing notification token.");
+        }
+        return;
+    }
+    
     NSDateFormatter *dateDateFormatter = [[NSDateFormatter alloc] init];
     [dateDateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSDateFormatter *timeDateFormatter = [[NSDateFormatter alloc] init];
@@ -171,11 +213,15 @@ static ENSNotificationManager *sharedInstance = nil;
 
 - (void)subscriptionsWithOnComplete:(void (^)(NSArray *))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     if (!self.appId) {
-        onError(@"Missing app id", @"Missing app id is not good!");
+        if (onError != nil) {
+            onError(@"no_app_id", @"Missing app id.");
+        }
         return;
     }
     if (!self.notificationToken) {
-        onError(@"Missing notificationToken", @"Missing notificationToken is not good!");
+        if (onError != nil) {
+            onError(@"no_notification_token", @"Missing notification token.");
+        }
         return;
     }
     
@@ -194,6 +240,19 @@ static ENSNotificationManager *sharedInstance = nil;
 }
 
 - (void)subscriptionsForChannel:(NSString *)channelIdentifier onComplete:(void (^)(NSArray *))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    if (!self.appId) {
+        if (onError != nil) {
+            onError(@"no_app_id", @"Missing app id.");
+        }
+        return;
+    }
+    if (!self.notificationToken) {
+        if (onError != nil) {
+            onError(@"no_notification_token", @"Missing notification token.");
+        }
+        return;
+    }
+    
     NSString *location = [NSString stringWithFormat:@"channels/%@", channelIdentifier];
     [self loadArrayForLocation:location params:nil onComplete:^(NSArray *list) {
         NSMutableArray *subscriptions = [[NSMutableArray alloc] init];
@@ -211,6 +270,19 @@ static ENSNotificationManager *sharedInstance = nil;
 #pragma mark Unsubscribe Methods
 
 - (void)unsubscribe:(NSString *)subscriptionIdentifier onComplete:(void(^)())onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    if (!self.appId) {
+        if (onError != nil) {
+            onError(@"no_app_id", @"Missing app id.");
+        }
+        return;
+    }
+    if (!self.notificationToken) {
+        if (onError != nil) {
+            onError(@"no_notification_token", @"Missing notification token.");
+        }
+        return;
+    }
+    
     NSString *location = @"subscriptions/;delete";
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:3];
     params[@"appId"] = self.appId;
@@ -225,6 +297,19 @@ static ENSNotificationManager *sharedInstance = nil;
 }
 
 - (void)unsubscribeFromChannel:(NSString *)channelIdentifier onComplete:(void(^)())onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    if (!self.appId) {
+        if (onError != nil) {
+            onError(@"no_app_id", @"Missing app id.");
+        }
+        return;
+    }
+    if (!self.notificationToken) {
+        if (onError != nil) {
+            onError(@"no_notification_token", @"Missing notification token.");
+        }
+        return;
+    }
+    
     NSString *location = @"subscriptions/;delete";
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:3];
     params[@"appId"] = self.appId;
@@ -239,6 +324,19 @@ static ENSNotificationManager *sharedInstance = nil;
 }
 
 - (void)unsubscribeAllOnComplete:(void(^)())onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    if (!self.appId) {
+        if (onError != nil) {
+            onError(@"no_app_id", @"Missing app id.");
+        }
+        return;
+    }
+    if (!self.notificationToken) {
+        if (onError != nil) {
+            onError(@"no_notification_token", @"Missing notification token.");
+        }
+        return;
+    }
+    
     NSString *location = @"subscriptions/;delete";
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:2];
     params[@"appId"] = self.appId;
@@ -307,6 +405,17 @@ static ENSNotificationManager *sharedInstance = nil;
 - (NSString *)deviceToken {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	return [defaults stringForKey:@"ENSDeviceToken"];
+}
+
+- (void)setUpdatedAt:(NSDate *)updatedAt {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:updatedAt forKey:@"ENSUpdatedAt"];
+	[defaults synchronize];
+}
+
+- (NSDate *)updatedAt {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults objectForKey:@"ENSUpdatedAt"];
 }
 
 - (NSString *)apiURL {
