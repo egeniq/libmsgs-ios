@@ -73,8 +73,8 @@ static ENSNotificationManager *sharedInstance = nil;
     if ([self.deviceToken isEqualToString:escapedDeviceToken] && self.notificationToken != nil) {
         // Same device token as previous time and we already have a notification token,
         // stopping to reduce server load unless the notification token on file is too old
-        if ([self.lastRegisterChannelIdentifier isEqual:channelIdentifier] && self.updatedAt != nil && [[NSDate date] timeIntervalSinceDate:self.updatedAt] < kENSNotificationManagerTokenTimeout) {
-          //  return;
+        if (((self.lastRegisterChannelIdentifier == nil && channelIdentifier == nil) || [self.lastRegisterChannelIdentifier isEqual:channelIdentifier]) && self.updatedAt != nil && [[NSDate date] timeIntervalSinceDate:self.updatedAt] < kENSNotificationManagerTokenTimeout) {
+            return;
         }
     } else {
         // Different device token (perhaps user synced preferences to another/new device)
