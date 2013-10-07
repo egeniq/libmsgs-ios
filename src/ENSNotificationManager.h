@@ -15,6 +15,7 @@
 
 - (void)registerDevice:(NSData *)deviceToken;
 - (void)registerDevice:(NSData *)deviceToken onComplete:(void(^)(NSString *deviceToken))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
+- (void)registerDevice:(NSData *)deviceToken channelIdentifier:(NSString *)channelIdentifier onComplete:(void (^)(NSString *notificationToken))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
 
 - (void)subscribeToChannel:(NSString *)channelIdentifier onComplete:(void(^)(NSString *subscriptionId))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
 - (void)subscribeToChannel:(NSString *)channelIdentifier startDate:(NSDate *)startDate endDate:(NSDate *)endDate onComplete:(void(^)(NSString *subscriptionId))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;

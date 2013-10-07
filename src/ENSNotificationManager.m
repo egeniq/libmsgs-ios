@@ -57,6 +57,10 @@ static ENSNotificationManager *sharedInstance = nil;
 }
 
 - (void)registerDevice:(NSData *)deviceToken onComplete:(void (^)(NSString *notificationToken))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
+    [self registerDevice:deviceToken channelIdentifier:nil onComplete:onComplete onError:onError];
+}
+
+- (void)registerDevice:(NSData *)deviceToken channelIdentifier:(NSString *)channelIdentifier onComplete:(void (^)(NSString *notificationToken))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError {
     if (!self.appId) {
         if (onError != nil) {
             onError(@"no_app_id", @"Missing app id.");
@@ -69,8 +73,8 @@ static ENSNotificationManager *sharedInstance = nil;
     if ([self.deviceToken isEqualToString:escapedDeviceToken] && self.notificationToken != nil) {
         // Same device token as previous time and we already have a notification token,
         // stopping to reduce server load unless the notification token on file is too old
-        if (self.updatedAt != nil && [[NSDate date] timeIntervalSinceDate:self.updatedAt] < kENSNotificationManagerTokenTimeout) {
-            return;
+        if ([self.lastRegisterChannelIdentifier isEqual:channelIdentifier] && self.updatedAt != nil && [[NSDate date] timeIntervalSinceDate:self.updatedAt] < kENSNotificationManagerTokenTimeout) {
+          //  return;
         }
     } else {
         // Different device token (perhaps user synced preferences to another/new device)
@@ -82,6 +86,10 @@ static ENSNotificationManager *sharedInstance = nil;
     params[@"deviceFamily"] = @"ios";
     params[@"deviceToken"] = self.deviceToken;
     
+    if (channelIdentifier != nil) {
+        params[@"channelId"] = channelIdentifier;
+    }
+    
     NSString *location = @"subscribers";
     if (self.notificationToken != nil) {
         location = [NSString stringWithFormat:@"%@/%@", location, @";update"];
@@ -90,6 +98,7 @@ static ENSNotificationManager *sharedInstance = nil;
     
     [self postToLocation:location params:params onComplete:^(NSDictionary *object) {
         self.updatedAt = [NSDate date];
+        self.lastRegisterChannelIdentifier = channelIdentifier;
         
         if (object != nil && [object valueForKey:@"notificationToken"] != nil) {
             self.notificationToken = [object valueForKey:@"notificationToken"];
@@ -360,7 +369,7 @@ static ENSNotificationManager *sharedInstance = nil;
         if (result != nil) {
             onError(result[@"code"], result[@"message"]);
         } else {
-            onError(@"unkown_error", [NSString stringWithFormat:@"An unkown error occured: %@", [error localizedDescription]]);
+            onError(@"unknown_error", [NSString stringWithFormat:@"An unknown error occured: %@", [error localizedDescription]]);
         }
     }];
     
@@ -375,7 +384,7 @@ static ENSNotificationManager *sharedInstance = nil;
         if (result != nil) {
             onError(result[@"code"], result[@"message"]);
         } else {
-            onError(@"unkown_error", [NSString stringWithFormat:@"An unkown error occured: %@", [error localizedDescription]]);
+            onError(@"unknown_error", [NSString stringWithFormat:@"An unknown error occured: %@", [error localizedDescription]]);
         }
     }];
     
@@ -416,6 +425,17 @@ static ENSNotificationManager *sharedInstance = nil;
 - (NSDate *)updatedAt {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     return [defaults objectForKey:@"ENSUpdatedAt"];
+}
+
+- (void)setLastRegisterChannelIdentifier:(NSString *)channelIdentifier {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:channelIdentifier forKey:@"ENSLastRegisterChannelIdentifier"];
+    [defaults synchronize];
+}
+
+- (NSString *)lastRegisterChannelIdentifier {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults objectForKey:@"ENSLastRegisterChannelIdentifier"];
 }
 
 - (NSString *)apiURL {
