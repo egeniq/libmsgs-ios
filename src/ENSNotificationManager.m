@@ -18,7 +18,7 @@ static ENSNotificationManager *sharedInstance = nil;
 
 @property (nonatomic, strong) NSString *notificationToken;
 @property (nonatomic, strong) NSString *deviceToken;
-@property (nonatomic, strong) AFHTTPClient *client;
+@property (nonatomic, strong) AFHTTPRequestOperationManager *operationManager;
 
 @end
 
@@ -39,11 +39,9 @@ static ENSNotificationManager *sharedInstance = nil;
 - (instancetype)init {
     self = [super init];
     if (self != nil) {
-        self.client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:self.apiURL]];
-        [self.client registerHTTPOperationClass:[AFJSONRequestOperation class]];
-        [self.client setDefaultHeader:@"Accept" value:@"application/json"];
-        self.client.parameterEncoding = AFFormURLParameterEncoding;
-        [self.client.operationQueue setMaxConcurrentOperationCount:1];
+        self.operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:self.apiURL]];
+        self.operationManager.responseSerializer = [AFJSONResponseSerializer serializer];
+        [self.operationManager.operationQueue setMaxConcurrentOperationCount:1];
     }
     
     return self;
@@ -362,33 +360,28 @@ static ENSNotificationManager *sharedInstance = nil;
 #pragma mark Connection Methods
 
 - (void)postToLocation:(NSString *)location params:(NSDictionary *)params onComplete:(void(^)(id result))onComplete onError:(void(^)(NSString *errorCode, NSString *errorMessage))onError {
-    NSURLRequest *request = [self.client requestWithMethod:@"POST" path:location parameters:params];
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id result) {
-        onComplete(result);
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id result) {
-        if (result != nil) {
-            onError(result[@"code"], result[@"message"]);
+    [self.operationManager POST:location parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        onComplete(responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (operation.responseObject != nil) {
+            onError(operation.responseObject[@"code"], operation.responseObject[@"message"]);
         } else {
             onError(@"unknown_error", [NSString stringWithFormat:@"An unknown error occured: %@", [error localizedDescription]]);
         }
     }];
-    
-    [self.client enqueueHTTPRequestOperation:operation];
 }
 
 - (void)loadArrayForLocation:(NSString *)location params:(NSDictionary *)params onComplete:(void(^)(NSArray *list))onComplete onError:(void(^)(NSString *errorCode, NSString *errorMessage))onError {
-    NSURLRequest *request = [self.client requestWithMethod:@"GET" path:location parameters:params];
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id result) {
-        onComplete((NSArray *)result);
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id result) {
-        if (result != nil) {
-            onError(result[@"code"], result[@"message"]);
+    
+    [self.operationManager GET:location parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        onComplete((NSArray *)responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (operation.responseObject != nil) {
+            onError(operation.responseObject[@"code"], operation.responseObject[@"message"]);
         } else {
             onError(@"unknown_error", [NSString stringWithFormat:@"An unknown error occured: %@", [error localizedDescription]]);
         }
     }];
-    
-    [self.client enqueueHTTPRequestOperation:operation];
 }
 
 #pragma mark -
