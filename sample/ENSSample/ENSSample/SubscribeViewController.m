@@ -38,7 +38,8 @@
 
 - (void)subscribe {
     NSString *channelName = self.channelNameTextField.text;
-    [[ENSNotificationManager sharedInstance] subscribeToChannel:channelName onComplete:^(BOOL complete) {
+    
+    [[ENSNotificationManager sharedInstance] subscribeToChannel:channelName onComplete:^(NSString *subscriptionId) {
         [self.navigationController popViewControllerAnimated:YES];
     } onError:^(NSString *errorCode, NSString *errorMessage) {
         self.errorLabel.text = errorMessage;
