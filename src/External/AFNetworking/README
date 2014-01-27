@@ -1,0 +1,1 @@
+Partial copy of AFNetworking 1.3.3 with added MSGS prefix to prevent namespace collisions.

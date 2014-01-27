@@ -8,8 +8,7 @@
 
 #import "SubscriptionsViewController.h"
 #import "SubscriptionViewController.h"
-#import "ENSNotificationManager.h"
-#import "ENSSubscription.h"
+#import "MSGSSimpleClient.h"
 
 @interface SubscriptionsViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -37,18 +36,18 @@
     [super viewDidLoad];
      self.tableView.tableFooterView = self.tableFooterView;
     
-    [[ENSNotificationManager sharedInstance] subscriptionsWithOnComplete:^(NSArray *subscriptions) {
+    [[MSGSSimpleClient sharedInstance] fetchSubscriptionsWithLimit:nil offset:nil sort:nil success:^(NSArray *subscriptions, BOOL hasMore) {
         self.subscriptions = subscriptions;
         [self.tableView reloadData];
-    } onError:^(NSString *errorCode, NSString *errorMessage) {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"Ok") otherButtonTitles:nil, nil] show];
+    } failure:^(NSError *error) {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"Ok") otherButtonTitles:nil, nil] show];
     }];
 }
 
 #pragma mark -
 #pragma mark TableView Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    ENSSubscription *subscription = [self.subscriptions objectAtIndex:indexPath.row];
+    MSGSSubscription *subscription = [self.subscriptions objectAtIndex:indexPath.row];
     SubscriptionViewController *viewController = [[SubscriptionViewController alloc] initWithSubscription:subscription];
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -78,8 +77,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:tableViewCellIdentifier];
     }
     
-    ENSSubscription *subscription = [self.subscriptions objectAtIndex:indexPath.row];
-    cell.textLabel.text = subscription.channelId;
+    MSGSSubscription *subscription = [self.subscriptions objectAtIndex:indexPath.row];
+    cell.textLabel.text = subscription.channel.code;
     return cell;
 }
 

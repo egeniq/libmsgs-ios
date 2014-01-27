@@ -22,12 +22,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>ENSAppId</key>
-	<string>notificationserver</string>
-	<key>ENSDeviceTokenExchangeURL</key>
-	<string>http://api.msgs.io/</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MSGSAPIKey</key>
+	<string>PUT_YOUR_KEY_HERE</string>
+	<key>MSGSAPIURL</key>
+	<string>http://api.msgs.io/v2/</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

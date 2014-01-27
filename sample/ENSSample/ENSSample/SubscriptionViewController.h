@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class ENSSubscription;
+@class MSGSSubscription;
 
 @interface SubscriptionViewController : UIViewController
 
-- (id)initWithSubscription:(ENSSubscription *)subscription;
+- (id)initWithSubscription:(MSGSSubscription *)subscription;
 
 @end
