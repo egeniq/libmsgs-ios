@@ -1,18 +1,18 @@
 libmsgs-ios
 ===========
-Msgs.io Notification Library for iOS
+Msgs.io library for iOS.
 
 Dependencies
 ============
-AFNetworking (https://github.com/AFNetworking/AFNetworking) - Add the *.h and *.m files to your project.
+No external dependencies.
 
 Setup
 =====
-Register your bundle with apple to enable push notifications. read more here: http://developer.apple.com/library/mac/#documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/ProvisioningDevelopment/ProvisioningDevelopment.html#//apple_ref/doc/uid/TP40008194-CH104-SW1
+Register your bundle with Apple to enable push notifications. read more here: http://developer.apple.com/library/mac/#documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/ProvisioningDevelopment/ProvisioningDevelopment.html#//apple_ref/doc/uid/TP40008194-CH104-SW1
 
 Add the following fields to your project .plist files:
-ENSAppId  - The application ID you received.
-ENSAPIURL - The Msgs.io API endpoint.
+MSGSAPIKey - The API key you received.
+MSGSAPIURL - The Msgs.io API endpoint.
 
 Sample Project
 ==============
