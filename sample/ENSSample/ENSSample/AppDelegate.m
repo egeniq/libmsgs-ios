@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 
 #import "RootViewController.h"
-#import "ENSNotificationManager.h"
+#import "MSGSSimpleClient.h"
 
 @interface AppDelegate()
 
@@ -68,17 +68,15 @@
 
 - (void)setupPushNotificationsForApplication:(UIApplication *)application {
 #if !TARGET_IPHONE_SIMULATOR
-    if ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENSDeviceTokenExchangeURL"] != nil) {
-        [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound];
-    }
+    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound];
 #endif
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-	[[ENSNotificationManager sharedInstance] registerDevice:deviceToken onComplete:^(NSString *deviceToken) {
-
-    } onError:^(NSString *errorCode, NSString *errorMessage) {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"Ok") otherButtonTitles:nil, nil] show];
+	[[MSGSSimpleClient sharedInstance] registerEndpointWithDeviceToken:deviceToken success:^(MSGSEndpoint *endpoint) {
+        // silently celebrate :)
+    } failure:^(NSError *error) {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"Ok") otherButtonTitles:nil, nil] show];
     }];
 }
 

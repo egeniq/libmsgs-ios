@@ -7,7 +7,6 @@
 //
 
 #import "RootViewController.h"
-#import "ENSNotificationManager.h"
 #import "AppDelegate.h"
 #import "SubscriptionsViewController.h"
 #import "SubscribeViewController.h"

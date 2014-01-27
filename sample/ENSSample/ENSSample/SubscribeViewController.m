@@ -7,8 +7,7 @@
 //
 
 #import "SubscribeViewController.h"
-#import "ENSNotificationManager.h"
-
+#import "MSGSSimpleClient.h"
 
 @interface SubscribeViewController ()
 
@@ -37,12 +36,12 @@
 }
 
 - (void)subscribe {
-    NSString *channelName = self.channelNameTextField.text;
+    NSString *channelCode = self.channelNameTextField.text;
     
-    [[ENSNotificationManager sharedInstance] subscribeToChannel:channelName onComplete:^(NSString *subscriptionId) {
+    [[MSGSSimpleClient sharedInstance] subscribeWithChannelCode:channelCode success:^(MSGSSubscription *subscription) {
         [self.navigationController popViewControllerAnimated:YES];
-    } onError:^(NSString *errorCode, NSString *errorMessage) {
-        self.errorLabel.text = errorMessage;
+    } failure:^(NSError *error) {
+        self.errorLabel.text = [error localizedDescription];
         self.errorLabel.hidden = NO;
     }];
 }

@@ -13,17 +13,31 @@
 		760D1AA1157B86090076CF1E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 760D1A9F157B86090076CF1E /* InfoPlist.strings */; };
 		760D1AA3157B86090076CF1E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D1AA2157B86090076CF1E /* main.m */; };
 		760D1AA7157B86090076CF1E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D1AA6157B86090076CF1E /* AppDelegate.m */; };
-		760D1ABE157B86920076CF1E /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D1ABD157B86920076CF1E /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		760D1ACF157B8AE90076CF1E /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D1ACD157B8AE90076CF1E /* RootViewController.m */; };
 		760D1AD0157B8AE90076CF1E /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 760D1ACE157B8AE90076CF1E /* RootViewController.xib */; };
 		76835CAC157BABC300C69CC5 /* SubscriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76835CAA157BABC300C69CC5 /* SubscriptionViewController.m */; };
 		76835CAD157BABC300C69CC5 /* SubscriptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76835CAB157BABC300C69CC5 /* SubscriptionViewController.xib */; };
-		76835D29157E51D200C69CC5 /* ENSNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 76835D23157E51D200C69CC5 /* ENSNotificationManager.m */; };
-		76835D2A157E51D200C69CC5 /* ENSSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 76835D25157E51D200C69CC5 /* ENSSubscription.m */; };
 		7687BB7C157B970C00BF7CE1 /* SubscriptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7687BB7A157B970C00BF7CE1 /* SubscriptionsViewController.m */; };
 		7687BB7D157B970C00BF7CE1 /* SubscriptionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7687BB7B157B970C00BF7CE1 /* SubscriptionsViewController.xib */; };
 		7687BB87157B9B0500BF7CE1 /* SubscribeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7687BB85157B9B0500BF7CE1 /* SubscribeViewController.m */; };
 		7687BB88157B9B0500BF7CE1 /* SubscribeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7687BB86157B9B0500BF7CE1 /* SubscribeViewController.xib */; };
+		D05383241895A12C007EDC91 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05383231895A12C007EDC91 /* CFNetwork.framework */; };
+		D05383261895A131007EDC91 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05383251895A131007EDC91 /* Security.framework */; };
+		D05383281895A1E0007EDC91 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05383271895A1E0007EDC91 /* SystemConfiguration.framework */; };
+		D053832A1895A258007EDC91 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05383291895A258007EDC91 /* MobileCoreServices.framework */; };
+		D053833018966814007EDC91 /* MSGSSimpleClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D053832F18966814007EDC91 /* MSGSSimpleClient.m */; };
+		D06B8CBA18927CB60009BA19 /* MSGSClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CB918927CB60009BA19 /* MSGSClient.m */; };
+		D06B8CC318927CC70009BA19 /* MSGSChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CBC18927CC70009BA19 /* MSGSChannel.m */; };
+		D06B8CC418927CC70009BA19 /* MSGSEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CBE18927CC70009BA19 /* MSGSEndpoint.m */; };
+		D06B8CC518927CC70009BA19 /* MSGSSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CC018927CC70009BA19 /* MSGSSubscription.m */; };
+		D06B8CC618927CC70009BA19 /* MSGSUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CC218927CC70009BA19 /* MSGSUser.m */; };
+		D06B8CCD18927CD20009BA19 /* MSGSEndpointRequestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CC818927CD20009BA19 /* MSGSEndpointRequestHelper.m */; };
+		D06B8CCE18927CD20009BA19 /* MSGSRequestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CCA18927CD20009BA19 /* MSGSRequestHelper.m */; };
+		D06B8CCF18927CD20009BA19 /* MSGSUserRequestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CCC18927CD20009BA19 /* MSGSUserRequestHelper.m */; };
+		D06B8CD618927CF90009BA19 /* MSGSAFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CD118927CF90009BA19 /* MSGSAFHTTPRequestOperation.m */; };
+		D06B8CD718927CF90009BA19 /* MSGSAFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CD318927CF90009BA19 /* MSGSAFJSONRequestOperation.m */; };
+		D06B8CD818927CF90009BA19 /* MSGSAFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CD518927CF90009BA19 /* MSGSAFURLConnectionOperation.m */; };
+		D06B8CDD18928DF80009BA19 /* MSGSAFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CDC18928DF80009BA19 /* MSGSAFHTTPClient.m */; };
 		DA79C1A31887FAC900A97BD7 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA79C1A21887FAC900A97BD7 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -38,24 +52,50 @@
 		760D1AA4157B86090076CF1E /* ENSSample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ENSSample-Prefix.pch"; sourceTree = "<group>"; };
 		760D1AA5157B86090076CF1E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		760D1AA6157B86090076CF1E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		760D1ABC157B86920076CF1E /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = External/JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
-		760D1ABD157B86920076CF1E /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = External/JSONKit/JSONKit.m; sourceTree = SOURCE_ROOT; };
 		760D1ACC157B8AE90076CF1E /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		760D1ACD157B8AE90076CF1E /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		760D1ACE157B8AE90076CF1E /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
 		76835CA9157BABC300C69CC5 /* SubscriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscriptionViewController.h; sourceTree = "<group>"; };
 		76835CAA157BABC300C69CC5 /* SubscriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscriptionViewController.m; sourceTree = "<group>"; };
 		76835CAB157BABC300C69CC5 /* SubscriptionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SubscriptionViewController.xib; sourceTree = "<group>"; };
-		76835D22157E51D100C69CC5 /* ENSNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ENSNotificationManager.h; path = ../../../src/ENSNotificationManager.h; sourceTree = "<group>"; };
-		76835D23157E51D200C69CC5 /* ENSNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ENSNotificationManager.m; path = ../../../src/ENSNotificationManager.m; sourceTree = "<group>"; };
-		76835D24157E51D200C69CC5 /* ENSSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ENSSubscription.h; path = ../../../src/ENSSubscription.h; sourceTree = "<group>"; };
-		76835D25157E51D200C69CC5 /* ENSSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ENSSubscription.m; path = ../../../src/ENSSubscription.m; sourceTree = "<group>"; };
 		7687BB79157B970C00BF7CE1 /* SubscriptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscriptionsViewController.h; sourceTree = "<group>"; };
 		7687BB7A157B970C00BF7CE1 /* SubscriptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscriptionsViewController.m; sourceTree = "<group>"; };
 		7687BB7B157B970C00BF7CE1 /* SubscriptionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SubscriptionsViewController.xib; sourceTree = "<group>"; };
 		7687BB84157B9B0500BF7CE1 /* SubscribeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscribeViewController.h; sourceTree = "<group>"; };
 		7687BB85157B9B0500BF7CE1 /* SubscribeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscribeViewController.m; sourceTree = "<group>"; };
 		7687BB86157B9B0500BF7CE1 /* SubscribeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SubscribeViewController.xib; sourceTree = "<group>"; };
+		D05383231895A12C007EDC91 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		D05383251895A131007EDC91 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		D05383271895A1E0007EDC91 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		D05383291895A258007EDC91 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		D053832E18966814007EDC91 /* MSGSSimpleClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSSimpleClient.h; sourceTree = "<group>"; };
+		D053832F18966814007EDC91 /* MSGSSimpleClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSSimpleClient.m; sourceTree = "<group>"; };
+		D06B8CB818927CB60009BA19 /* MSGSClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSClient.h; sourceTree = "<group>"; };
+		D06B8CB918927CB60009BA19 /* MSGSClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSClient.m; sourceTree = "<group>"; };
+		D06B8CBB18927CC70009BA19 /* MSGSChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSChannel.h; sourceTree = "<group>"; };
+		D06B8CBC18927CC70009BA19 /* MSGSChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSChannel.m; sourceTree = "<group>"; };
+		D06B8CBD18927CC70009BA19 /* MSGSEndpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSEndpoint.h; sourceTree = "<group>"; };
+		D06B8CBE18927CC70009BA19 /* MSGSEndpoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSEndpoint.m; sourceTree = "<group>"; };
+		D06B8CBF18927CC70009BA19 /* MSGSSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSSubscription.h; sourceTree = "<group>"; };
+		D06B8CC018927CC70009BA19 /* MSGSSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSSubscription.m; sourceTree = "<group>"; };
+		D06B8CC118927CC70009BA19 /* MSGSUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSUser.h; sourceTree = "<group>"; };
+		D06B8CC218927CC70009BA19 /* MSGSUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSUser.m; sourceTree = "<group>"; };
+		D06B8CC718927CD20009BA19 /* MSGSEndpointRequestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSEndpointRequestHelper.h; sourceTree = "<group>"; };
+		D06B8CC818927CD20009BA19 /* MSGSEndpointRequestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSEndpointRequestHelper.m; sourceTree = "<group>"; };
+		D06B8CC918927CD20009BA19 /* MSGSRequestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSRequestHelper.h; sourceTree = "<group>"; };
+		D06B8CCA18927CD20009BA19 /* MSGSRequestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSRequestHelper.m; sourceTree = "<group>"; };
+		D06B8CCB18927CD20009BA19 /* MSGSUserRequestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSUserRequestHelper.h; sourceTree = "<group>"; };
+		D06B8CCC18927CD20009BA19 /* MSGSUserRequestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSUserRequestHelper.m; sourceTree = "<group>"; };
+		D06B8CD018927CF90009BA19 /* MSGSAFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSAFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		D06B8CD118927CF90009BA19 /* MSGSAFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSAFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		D06B8CD218927CF90009BA19 /* MSGSAFJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSAFJSONRequestOperation.h; sourceTree = "<group>"; };
+		D06B8CD318927CF90009BA19 /* MSGSAFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSAFJSONRequestOperation.m; sourceTree = "<group>"; };
+		D06B8CD418927CF90009BA19 /* MSGSAFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSAFURLConnectionOperation.h; sourceTree = "<group>"; };
+		D06B8CD518927CF90009BA19 /* MSGSAFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSAFURLConnectionOperation.m; sourceTree = "<group>"; };
+		D06B8CD918928A060009BA19 /* MSGSClient-Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MSGSClient-Protected.h"; sourceTree = "<group>"; };
+		D06B8CDA18928AB90009BA19 /* MSGSRequestHelper-Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MSGSRequestHelper-Protected.h"; sourceTree = "<group>"; };
+		D06B8CDB18928DF80009BA19 /* MSGSAFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSAFHTTPClient.h; sourceTree = "<group>"; };
+		D06B8CDC18928DF80009BA19 /* MSGSAFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSAFHTTPClient.m; sourceTree = "<group>"; };
 		DA79C1A21887FAC900A97BD7 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -64,6 +104,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D053832A1895A258007EDC91 /* MobileCoreServices.framework in Frameworks */,
+				D05383281895A1E0007EDC91 /* SystemConfiguration.framework in Frameworks */,
+				D05383261895A131007EDC91 /* Security.framework in Frameworks */,
+				D05383241895A12C007EDC91 /* CFNetwork.framework in Frameworks */,
 				760D1A97157B86090076CF1E /* UIKit.framework in Frameworks */,
 				760D1A99157B86090076CF1E /* Foundation.framework in Frameworks */,
 				760D1A9B157B86090076CF1E /* CoreGraphics.framework in Frameworks */,
@@ -95,6 +139,10 @@
 		760D1A95157B86090076CF1E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D05383291895A258007EDC91 /* MobileCoreServices.framework */,
+				D05383271895A1E0007EDC91 /* SystemConfiguration.framework */,
+				D05383251895A131007EDC91 /* Security.framework */,
+				D05383231895A12C007EDC91 /* CFNetwork.framework */,
 				760D1A96157B86090076CF1E /* UIKit.framework */,
 				760D1A98157B86090076CF1E /* Foundation.framework */,
 				760D1A9A157B86090076CF1E /* CoreGraphics.framework */,
@@ -105,9 +153,8 @@
 		760D1A9C157B86090076CF1E /* ENSSample */ = {
 			isa = PBXGroup;
 			children = (
-				7687BB82157B972800BF7CE1 /* General */,
+				D01762DB1892CA83005119C7 /* Classes */,
 				7687BB80157B971700BF7CE1 /* Resources */,
-				7687BB7F157B971100BF7CE1 /* ViewControllers */,
 			);
 			path = ENSSample;
 			sourceTree = "<group>";
@@ -115,30 +162,25 @@
 		760D1AB3157B86600076CF1E /* External */ = {
 			isa = PBXGroup;
 			children = (
-				760D1AB5157B86730076CF1E /* ENS */,
-				760D1AB4157B866B0076CF1E /* JSONKit */,
+				760D1AB5157B86730076CF1E /* Msgs */,
 			);
 			path = External;
 			sourceTree = "<group>";
 		};
-		760D1AB4157B866B0076CF1E /* JSONKit */ = {
+		760D1AB5157B86730076CF1E /* Msgs */ = {
 			isa = PBXGroup;
 			children = (
-				760D1ABC157B86920076CF1E /* JSONKit.h */,
-				760D1ABD157B86920076CF1E /* JSONKit.m */,
+				D06B8CAA189276F70009BA19 /* External */,
+				D00660D9189122AD004F82C9 /* Helper */,
+				D00660D71891226C004F82C9 /* Entity */,
+				D06B8CB818927CB60009BA19 /* MSGSClient.h */,
+				D06B8CD918928A060009BA19 /* MSGSClient-Protected.h */,
+				D06B8CB918927CB60009BA19 /* MSGSClient.m */,
+				D053832E18966814007EDC91 /* MSGSSimpleClient.h */,
+				D053832F18966814007EDC91 /* MSGSSimpleClient.m */,
 			);
-			name = JSONKit;
-			sourceTree = "<group>";
-		};
-		760D1AB5157B86730076CF1E /* ENS */ = {
-			isa = PBXGroup;
-			children = (
-				76835D22157E51D100C69CC5 /* ENSNotificationManager.h */,
-				76835D23157E51D200C69CC5 /* ENSNotificationManager.m */,
-				76835D24157E51D200C69CC5 /* ENSSubscription.h */,
-				76835D25157E51D200C69CC5 /* ENSSubscription.m */,
-			);
-			name = ENS;
+			name = Msgs;
+			path = ../../../src;
 			sourceTree = "<group>";
 		};
 		7687BB7F157B971100BF7CE1 /* ViewControllers */ = {
@@ -194,6 +236,76 @@
 				760D1AA4157B86090076CF1E /* ENSSample-Prefix.pch */,
 			);
 			name = General;
+			sourceTree = "<group>";
+		};
+		D00660D71891226C004F82C9 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				D06B8CBB18927CC70009BA19 /* MSGSChannel.h */,
+				D06B8CBC18927CC70009BA19 /* MSGSChannel.m */,
+				D06B8CBD18927CC70009BA19 /* MSGSEndpoint.h */,
+				D06B8CBE18927CC70009BA19 /* MSGSEndpoint.m */,
+				D06B8CBF18927CC70009BA19 /* MSGSSubscription.h */,
+				D06B8CC018927CC70009BA19 /* MSGSSubscription.m */,
+				D06B8CC118927CC70009BA19 /* MSGSUser.h */,
+				D06B8CC218927CC70009BA19 /* MSGSUser.m */,
+			);
+			name = Entity;
+			sourceTree = "<group>";
+		};
+		D00660D9189122AD004F82C9 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				D06B8CC918927CD20009BA19 /* MSGSRequestHelper.h */,
+				D06B8CDA18928AB90009BA19 /* MSGSRequestHelper-Protected.h */,
+				D06B8CCA18927CD20009BA19 /* MSGSRequestHelper.m */,
+				D06B8CC718927CD20009BA19 /* MSGSEndpointRequestHelper.h */,
+				D06B8CC818927CD20009BA19 /* MSGSEndpointRequestHelper.m */,
+				D06B8CCB18927CD20009BA19 /* MSGSUserRequestHelper.h */,
+				D06B8CCC18927CD20009BA19 /* MSGSUserRequestHelper.m */,
+			);
+			name = Helper;
+			sourceTree = "<group>";
+		};
+		D01762DB1892CA83005119C7 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				7687BB82157B972800BF7CE1 /* General */,
+				D01762DC1892CA96005119C7 /* Model */,
+				7687BB7F157B971100BF7CE1 /* ViewControllers */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		D01762DC1892CA96005119C7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		D06B8CAA189276F70009BA19 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				D06B8CAB189276FF0009BA19 /* AFNetworking */,
+			);
+			name = External;
+			path = External/AFNetworking;
+			sourceTree = "<group>";
+		};
+		D06B8CAB189276FF0009BA19 /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				D06B8CDB18928DF80009BA19 /* MSGSAFHTTPClient.h */,
+				D06B8CDC18928DF80009BA19 /* MSGSAFHTTPClient.m */,
+				D06B8CD018927CF90009BA19 /* MSGSAFHTTPRequestOperation.h */,
+				D06B8CD118927CF90009BA19 /* MSGSAFHTTPRequestOperation.m */,
+				D06B8CD218927CF90009BA19 /* MSGSAFJSONRequestOperation.h */,
+				D06B8CD318927CF90009BA19 /* MSGSAFJSONRequestOperation.m */,
+				D06B8CD418927CF90009BA19 /* MSGSAFURLConnectionOperation.h */,
+				D06B8CD518927CF90009BA19 /* MSGSAFURLConnectionOperation.m */,
+			);
+			name = AFNetworking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,15 +374,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D06B8CBA18927CB60009BA19 /* MSGSClient.m in Sources */,
 				760D1AA3157B86090076CF1E /* main.m in Sources */,
+				D06B8CC618927CC70009BA19 /* MSGSUser.m in Sources */,
+				D06B8CCF18927CD20009BA19 /* MSGSUserRequestHelper.m in Sources */,
+				D06B8CD818927CF90009BA19 /* MSGSAFURLConnectionOperation.m in Sources */,
+				D06B8CD618927CF90009BA19 /* MSGSAFHTTPRequestOperation.m in Sources */,
 				760D1AA7157B86090076CF1E /* AppDelegate.m in Sources */,
-				760D1ABE157B86920076CF1E /* JSONKit.m in Sources */,
+				D06B8CCD18927CD20009BA19 /* MSGSEndpointRequestHelper.m in Sources */,
 				760D1ACF157B8AE90076CF1E /* RootViewController.m in Sources */,
+				D06B8CCE18927CD20009BA19 /* MSGSRequestHelper.m in Sources */,
 				7687BB7C157B970C00BF7CE1 /* SubscriptionsViewController.m in Sources */,
+				D053833018966814007EDC91 /* MSGSSimpleClient.m in Sources */,
 				7687BB87157B9B0500BF7CE1 /* SubscribeViewController.m in Sources */,
+				D06B8CC318927CC70009BA19 /* MSGSChannel.m in Sources */,
+				D06B8CC418927CC70009BA19 /* MSGSEndpoint.m in Sources */,
+				D06B8CD718927CF90009BA19 /* MSGSAFJSONRequestOperation.m in Sources */,
 				76835CAC157BABC300C69CC5 /* SubscriptionViewController.m in Sources */,
-				76835D29157E51D200C69CC5 /* ENSNotificationManager.m in Sources */,
-				76835D2A157E51D200C69CC5 /* ENSSubscription.m in Sources */,
+				D06B8CC518927CC70009BA19 /* MSGSSubscription.m in Sources */,
+				D06B8CDD18928DF80009BA19 /* MSGSAFHTTPClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
