@@ -115,7 +115,9 @@
     [self postPath:@"subscriptions"
         parameters:@{ @"channelCode": channelCode }
            success:^(id data) {
-                 success([[MSGSSubscription alloc] initWithDictionary:data]);
+               if (success != nil) {
+                   success([[MSGSSubscription alloc] initWithDictionary:data]);
+               }
             } failure:failure];
 }
 
@@ -125,7 +127,9 @@
     [self deletePath:[NSString stringWithFormat:@"subscriptions/%@", channelCode]
           parameters:nil
              success:^(id data) {
-                 success();
+                 if (success != nil) {
+                     success();
+                 }
              } failure:failure];
 }
 

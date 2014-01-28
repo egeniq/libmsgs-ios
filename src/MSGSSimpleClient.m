@@ -7,10 +7,13 @@
 //
 
 #import "MSGSSimpleClient.h"
+#import "MSGSUtil.h"
 
 @interface MSGSSimpleClient ()
 
 @property (nonatomic, strong) MSGSClient *client;
+
+@property (nonatomic, strong) MSGSEndpoint *endpoint;
 
 @end
 
@@ -25,6 +28,10 @@
         NSURL *baseURL = [NSURL URLWithString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"MSGSAPIURL"]];
         NSString *apiKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"MSGSAPIKey"];
         self.client = [[MSGSClient alloc] initWithBaseURL:baseURL apiKey:apiKey];
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSDictionary *keyedValues = [defaults dictionaryForKey:@"MSGSEndpoint"];
+        _endpoint = keyedValues != nil ? [[MSGSEndpoint alloc] initWithDictionary:keyedValues] : nil;
     }
     
     return self;
@@ -45,81 +52,46 @@
 }
 
 #pragma mark -
+#pragma mark Setters
+
+- (void)setEndpoint:(MSGSEndpoint *)endpoint {
+    _endpoint = endpoint;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setValue:[endpoint dictionary] forKey:@"MSGSEndpoint"];
+    [defaults synchronize];
+}
+
+#pragma mark -
 #pragma mark Manage endpoint
-
-- (NSString *)hexStringFromDeviceToken:(NSData *)deviceToken {
-    const unsigned char *bytes = (const unsigned char *)[deviceToken bytes];
-    NSUInteger numberOfBytes =  [deviceToken length];
-    
-    NSMutableString *hex = [[NSMutableString alloc] initWithCapacity:2 * numberOfBytes];
-    for (NSUInteger i = 0; i < numberOfBytes; i++) {
-        [hex appendFormat:@"%02x", bytes[i]];
-    }
-    
-    return hex;
-}
-
-- (NSString *)endpointAddress {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    return [defaults stringForKey:@"MSGSEndpointAddress"];
-}
-
-- (void)setEndpointAddress:(NSString *)address {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue:address forKey:@"MSGSEndpointAddress"];
-    [defaults synchronize];
-}
-
-- (NSString *)endpointToken {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    return [defaults stringForKey:@"MSGSEndpointToken"];
-}
-
-- (void)setEndpointToken:(NSString *)token {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue:token forKey:@"MSGSEndpointToken"];
-    [defaults synchronize];
-}
 
 - (void)registerEndpointWithDeviceToken:(NSData *)deviceToken
                                 success:(void (^)(MSGSEndpoint *endpoint))success
                                 failure:(void (^)(NSError *error))failure {
-    NSString *address = [self hexStringFromDeviceToken:deviceToken];
-    if (self.endpointToken != nil && [self.endpointAddress isEqualToString:address]) {
+    NSString *address = [MSGSUtil addressForDeviceToken:deviceToken];
+    if (self.endpoint != nil && [self.endpoint.address isEqualToString:address]) {
+        success(self.endpoint);
         return;
     }
     
-    NSString *type = nil;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        type = @"iphone";
-    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        type = @"ipad";
-    } else {
-        type = @"ios";
-    }
-    
-    NSString *name = UIDevice.currentDevice.name;
-    
-    if (self.endpointToken == nil) {
-        NSDictionary *endpoint = @{ @"type": type, @"address": address, @"name": name};
-        [self.client registerEndpointWithDictionary:endpoint success:^(MSGSEndpoint *endpoint) {
-            self.endpointAddress = endpoint.address;
-            self.endpointToken = endpoint.token;
+    if (self.endpoint == nil) {
+        NSDictionary *keyedValues = @{ @"type": [MSGSUtil deviceType], @"address": address, @"name": [MSGSUtil deviceName] };
+        [self.client registerEndpointWithDictionary:keyedValues success:^(MSGSEndpoint *endpoint) {
+            self.endpoint = endpoint;
             success(endpoint);
         } failure:failure];
     } else {
-        NSDictionary *endpoint = @{ @"type": type, @"address": address, @"name": name};
-        [[self.client forEndpointWithToken:self.endpointToken] updateWithDictionary:endpoint
-                                                                            success:^(MSGSEndpoint *endpoint) {
-                                                                                self.endpointAddress = endpoint.address;
-                                                                                self.endpointToken = endpoint.token;
-                                                                                success(endpoint);
-                                                                            } failure:failure];
+        NSDictionary *keyedValues = @{ @"address": address, @"name": [MSGSUtil deviceName] };
+        [[self.client forEndpointWithToken:self.endpoint.token] updateWithDictionary:keyedValues
+                                                                             success:^(MSGSEndpoint *endpoint) {
+                                                                                 self.endpoint = endpoint;
+                                                                                 success(endpoint);
+                                                                             } failure:failure];
     }
 }
 
 - (void)requireEndpointTokenOnFailure:(void (^)(NSError *error))failure {
-    if (self.endpointToken == nil) {
+    if (self.endpoint == nil) {
         NSDictionary *userInfo = @{
             MSGSErrorCodeKey: @"no_endpoint_registered",
             MSGSErrorMessageKey: @"No endpoint registered",
@@ -137,7 +109,7 @@
                                  success:(void (^)(MSGSSubscription *subscription))success
                                  failure:(void (^)(NSError *error))failure {
     [self requireEndpointTokenOnFailure:failure];
-    [[self.client forEndpointWithToken:self.endpointToken] fetchSubscriptionWithChannelCode:channelCode success:success failure:failure];
+    [[self.client forEndpointWithToken:self.endpoint.token] fetchSubscriptionWithChannelCode:channelCode success:success failure:failure];
 }
 
 - (void)fetchSubscriptionsWithLimit:(NSNumber *)limit
@@ -146,7 +118,7 @@
                             success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
                             failure:(void (^)(NSError *error))failure {
     [self requireEndpointTokenOnFailure:failure];
-    [[self.client forEndpointWithToken:self.endpointToken] fetchSubscriptionsWithLimit:limit offset:offset sort:sort success:success failure:failure];
+    [[self.client forEndpointWithToken:self.endpoint.token] fetchSubscriptionsWithLimit:limit offset:offset sort:sort success:success failure:failure];
 }
 
 - (void)fetchSubscriptionsWithTags:(NSArray *)tags
@@ -156,7 +128,7 @@
                            success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
                            failure:(void (^)(NSError *error))failure {
     [self requireEndpointTokenOnFailure:failure];
-    [[self.client forEndpointWithToken:self.endpointToken] fetchSubscriptionsWithTags:tags limit:limit offset:offset sort:sort success:success failure:failure];
+    [[self.client forEndpointWithToken:self.endpoint.token] fetchSubscriptionsWithTags:tags limit:limit offset:offset sort:sort success:success failure:failure];
 }
 
 
@@ -164,14 +136,14 @@
                          success:(void (^)(MSGSSubscription *subscription))success
                          failure:(void (^)(NSError *error))failure {
     [self requireEndpointTokenOnFailure:failure];
-    [[self.client forEndpointWithToken:self.endpointToken] subscribeWithChannelCode:channelCode success:success failure:failure];
+    [[self.client forEndpointWithToken:self.endpoint.token] subscribeWithChannelCode:channelCode success:success failure:failure];
 }
 
 - (void)unsubscribeWithChannelCode:(NSString *)channelCode
                            success:(void (^)())success
                            failure:(void (^)(NSError *error))failure {
     [self requireEndpointTokenOnFailure:failure];
-    [[self.client forEndpointWithToken:self.endpointToken] unsubscribeWithChannelCode:channelCode success:success failure:failure];
+    [[self.client forEndpointWithToken:self.endpoint.token] unsubscribeWithChannelCode:channelCode success:success failure:failure];
 }
 
 @end

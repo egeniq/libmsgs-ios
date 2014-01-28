@@ -25,7 +25,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MSGSAPIKey</key>
-	<string>PUT_YOUR_KEY_HERE</string>
+	<string>YOUR_API_KEY_HERE</string>
 	<key>MSGSAPIURL</key>
 	<string>http://api.msgs.io/v2/</string>
 	<key>UIRequiredDeviceCapabilities</key>

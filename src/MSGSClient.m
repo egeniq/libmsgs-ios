@@ -47,7 +47,9 @@ NSString * const MSGSErrorMessageKey = @"MSGSErrorMessageKey";
     [self postPath:@"users"
         parameters:keyedValues
            success:^(id data) {
-               success([[MSGSUser alloc] initWithDictionary:data]);
+               if (success != nil) {
+                   success([[MSGSUser alloc] initWithDictionary:data]);
+               }
            } failure:failure];
 }
 
@@ -62,7 +64,9 @@ NSString * const MSGSErrorMessageKey = @"MSGSErrorMessageKey";
     [self postPath:@"endpoints"
         parameters:keyedValues
            success:^(id data) {
-               success([[MSGSEndpoint alloc] initWithDictionary:data]);
+               if (success != nil) {
+                   success([[MSGSEndpoint alloc] initWithDictionary:data]);
+               }
            } failure:failure];
 }
 
@@ -90,7 +94,9 @@ NSString * const MSGSErrorMessageKey = @"MSGSErrorMessageKey";
     [self.client getPath:path parameters:parameters success:^(MSGSAFHTTPRequestOperation *operation, id responseObject) {
         success(responseObject);
     } failure:^(MSGSAFHTTPRequestOperation *operation, NSError *error) {
-        failure([self processFailureForOperation:operation error:error]);
+        if (failure != nil) {
+            failure([self processFailureForOperation:operation error:error]);
+        }
     }];
 }
 
@@ -99,9 +105,13 @@ NSString * const MSGSErrorMessageKey = @"MSGSErrorMessageKey";
          success:(void (^)(id data))success
          failure:(void (^)(NSError *error))failure {
     [self.client postPath:path parameters:parameters success:^(MSGSAFHTTPRequestOperation *operation, id responseObject) {
-        success(responseObject);
+        if (success != nil) {
+            success(responseObject);
+        }
     } failure:^(MSGSAFHTTPRequestOperation *operation, NSError *error) {
-        failure([self processFailureForOperation:operation error:error]);
+        if (failure != nil) {
+            failure([self processFailureForOperation:operation error:error]);
+        }
     }];
 }
 
@@ -110,9 +120,13 @@ NSString * const MSGSErrorMessageKey = @"MSGSErrorMessageKey";
            success:(void (^)(id data))success
            failure:(void (^)(NSError *error))failure {
     [self.client deletePath:path parameters:parameters success:^(MSGSAFHTTPRequestOperation *operation, id responseObject) {
-        success(responseObject);
+        if (success != nil) {
+            success(responseObject);
+        }
     } failure:^(MSGSAFHTTPRequestOperation *operation, NSError *error) {
-        failure([self processFailureForOperation:operation error:error]);
+        if (failure != nil) {
+            failure([self processFailureForOperation:operation error:error]);
+        }
     }];
 }
 

@@ -16,4 +16,6 @@
 - (instancetype)init;
 - (instancetype)initWithDictionary:(NSDictionary *)keyedValues;
 
+- (NSDictionary *)dictionary;
+
 @end
