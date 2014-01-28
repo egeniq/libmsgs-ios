@@ -25,9 +25,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MSGSAPIKey</key>
-	<string>5697d402ead812da00dc9056b874a103622aadb874f98b5bf8283db12c9ffaaf</string>
+	<string>YOUR_API_KEY_HERE</string>
 	<key>MSGSAPIURL</key>
-	<string>http://msgs.staging.egeniq.com/</string>
+	<string>http://api.msgs.io/v2/</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
