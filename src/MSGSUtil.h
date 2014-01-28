@@ -10,8 +10,9 @@
 
 @interface MSGSUtil : NSObject
 
-+ (NSString *)addressForDeviceToken:(NSData *)deviceToken;
 + (NSString *)deviceType;
 + (NSString *)deviceName;
++ (NSString *)hexStringForData:(NSData *)data;
++ (NSDictionary *)dictionaryWithoutNullValues:(NSDictionary *)keyedValues;
 
 @end

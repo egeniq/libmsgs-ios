@@ -57,8 +57,9 @@
 - (void)setEndpoint:(MSGSEndpoint *)endpoint {
     _endpoint = endpoint;
     
+    NSDictionary *keyedValues = [MSGSUtil dictionaryWithoutNullValues:[endpoint dictionary]];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue:[endpoint dictionary] forKey:@"MSGSEndpoint"];
+    [defaults setObject:keyedValues forKey:@"MSGSEndpoint"];
     [defaults synchronize];
 }
 
@@ -68,7 +69,7 @@
 - (void)registerEndpointWithDeviceToken:(NSData *)deviceToken
                                 success:(void (^)(MSGSEndpoint *endpoint))success
                                 failure:(void (^)(NSError *error))failure {
-    NSString *address = [MSGSUtil addressForDeviceToken:deviceToken];
+    NSString *address = [MSGSUtil hexStringForData:deviceToken];
     if (self.endpoint != nil && [self.endpoint.address isEqualToString:address]) {
         success(self.endpoint);
         return;
