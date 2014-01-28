@@ -1,6 +1,6 @@
 //
 //  MSGSUtil.h
-//  RTLNieuws365
+//  ENSSample
 //
 //  Created by Peter Verhage on 27-01-14.
 //  Copyright (c) 2014 Egeniq. All rights reserved.
