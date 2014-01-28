@@ -23,16 +23,21 @@
 - (instancetype)initWithDictionary:(NSDictionary *)keyedValues {
     self = [super init];
     if (self != nil) {
-        self.token = keyedValues[@"token"];
-        self.type = keyedValues[@"type"];
-        self.address = keyedValues[@"address"];
-        self.name = keyedValues[@"name"];
-        self.endpointSubscriptionsActive = keyedValues[@"endpointSubscriptionsActive"];
-        self.userSubscriptionsActive = keyedValues[@"userSubscriptionsActive"];
-        self.data = keyedValues[@"data"] == [NSNull null] ? nil : keyedValues[@"data"];
+        self.token = keyedValues[@"token"] != [NSNull null] ? keyedValues[@"token"] : nil;
+        self.type = keyedValues[@"type"] != [NSNull null] ? keyedValues[@"type"] : nil;
+        self.address = keyedValues[@"address"] != [NSNull null] ? keyedValues[@"address"] : nil;
+        self.name = keyedValues[@"name"] != [NSNull null] ? keyedValues[@"name"] : nil;
+        self.endpointSubscriptionsActive = keyedValues[@"endpointSubscriptionsActive"] != [NSNull null] ? keyedValues[@"endpointSubscriptionsActive"] : nil;
+        self.userSubscriptionsActive = keyedValues[@"userSubscriptionsActive"] != [NSNull null] ? keyedValues[@"userSubscriptionsActive"] : nil;
+        self.data = keyedValues[@"data"] != [NSNull null] ? keyedValues[@"data"] : nil;
     }
     
     return self;
+}
+
+- (NSDictionary *)dictionary {
+    NSDictionary *keyedValues = [self dictionaryWithValuesForKeys:@[@"token", @"type", @"address", @"name", @"endpointSubscriptionsActive", @"userSubscriptionsActive", @"data"]];
+    return keyedValues;
 }
 
 @end

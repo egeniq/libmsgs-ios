@@ -26,6 +26,7 @@
 		D05383281895A1E0007EDC91 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05383271895A1E0007EDC91 /* SystemConfiguration.framework */; };
 		D053832A1895A258007EDC91 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D05383291895A258007EDC91 /* MobileCoreServices.framework */; };
 		D053833018966814007EDC91 /* MSGSSimpleClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D053832F18966814007EDC91 /* MSGSSimpleClient.m */; };
+		D053837E1897A6E2007EDC91 /* MSGSUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D053837D1897A6E2007EDC91 /* MSGSUtil.m */; };
 		D06B8CBA18927CB60009BA19 /* MSGSClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CB918927CB60009BA19 /* MSGSClient.m */; };
 		D06B8CC318927CC70009BA19 /* MSGSChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CBC18927CC70009BA19 /* MSGSChannel.m */; };
 		D06B8CC418927CC70009BA19 /* MSGSEndpoint.m in Sources */ = {isa = PBXBuildFile; fileRef = D06B8CBE18927CC70009BA19 /* MSGSEndpoint.m */; };
@@ -70,6 +71,8 @@
 		D05383291895A258007EDC91 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		D053832E18966814007EDC91 /* MSGSSimpleClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSSimpleClient.h; sourceTree = "<group>"; };
 		D053832F18966814007EDC91 /* MSGSSimpleClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSSimpleClient.m; sourceTree = "<group>"; };
+		D053837C1897A6E2007EDC91 /* MSGSUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSUtil.h; sourceTree = "<group>"; };
+		D053837D1897A6E2007EDC91 /* MSGSUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSUtil.m; sourceTree = "<group>"; };
 		D06B8CB818927CB60009BA19 /* MSGSClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSClient.h; sourceTree = "<group>"; };
 		D06B8CB918927CB60009BA19 /* MSGSClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSGSClient.m; sourceTree = "<group>"; };
 		D06B8CBB18927CC70009BA19 /* MSGSChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGSChannel.h; sourceTree = "<group>"; };
@@ -173,6 +176,8 @@
 				D06B8CAA189276F70009BA19 /* External */,
 				D00660D9189122AD004F82C9 /* Helper */,
 				D00660D71891226C004F82C9 /* Entity */,
+				D053837C1897A6E2007EDC91 /* MSGSUtil.h */,
+				D053837D1897A6E2007EDC91 /* MSGSUtil.m */,
 				D06B8CB818927CB60009BA19 /* MSGSClient.h */,
 				D06B8CD918928A060009BA19 /* MSGSClient-Protected.h */,
 				D06B8CB918927CB60009BA19 /* MSGSClient.m */,
@@ -375,6 +380,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D06B8CBA18927CB60009BA19 /* MSGSClient.m in Sources */,
+				D053837E1897A6E2007EDC91 /* MSGSUtil.m in Sources */,
 				760D1AA3157B86090076CF1E /* main.m in Sources */,
 				D06B8CC618927CC70009BA19 /* MSGSUser.m in Sources */,
 				D06B8CCF18927CD20009BA19 /* MSGSUserRequestHelper.m in Sources */,

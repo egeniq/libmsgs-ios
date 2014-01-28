@@ -24,14 +24,18 @@
                      success:(void (^)(MSGSEndpoint *endpoint))success
                      failure:(void (^)(NSError *error))failure {
     [self postPath:nil parameters:keyedValues success:^(id data) {
-        success([[MSGSEndpoint alloc] initWithDictionary:data]);
+        if (success != nil) {
+            success([[MSGSEndpoint alloc] initWithDictionary:data]);
+        }
     } failure:failure];
 }
 
 - (void)deleteWithSuccess:(void (^)())success
                   failure:(void (^)(NSError *error))failure {
     [self deletePath:nil parameters:nil success:^(id data) {
-        success(nil);
+        if (success != nil) {
+            success();
+        }
     } failure:failure];
 }
 

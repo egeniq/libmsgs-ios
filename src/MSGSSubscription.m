@@ -18,12 +18,18 @@
 - (instancetype)initWithDictionary:(NSDictionary *)keyedValues {
     self = [super init];
     if (self != nil) {
-        if (keyedValues[@"channel"] != nil) {
+        if (keyedValues[@"channel"] != nil && keyedValues[@"channel"] != [NSNull null]) {
             self.channel = [[MSGSChannel alloc] initWithDictionary:keyedValues[@"channel"]];
         }
     }
     
     return self;
+}
+
+
+- (NSDictionary *)dictionary {
+    NSDictionary *keyedValues = @{ @"channel": [self.channel dictionary] };
+    return keyedValues;
 }
 
 @end

@@ -21,7 +21,9 @@
     [self postPath:@"endpoints"
         parameters:keyedValues
            success:^(id data) {
-               success([[MSGSEndpoint alloc] initWithDictionary:data]);
+               if (success != nil) {
+                   success([[MSGSEndpoint alloc] initWithDictionary:data]);
+               }
            } failure:failure];
 }
 

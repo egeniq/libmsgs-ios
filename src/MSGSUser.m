@@ -18,10 +18,16 @@
 - (instancetype)initWithDictionary:(NSDictionary *)keyedValues {
     self = [super init];
     if (self != nil) {
-        self.externalUserId = keyedValues[@"externalUserId"];
+        self.token = keyedValues[@"token"] != [NSNull null] ? keyedValues[@"token"] : nil;
+        self.externalUserId = keyedValues[@"externalUserId"] != [NSNull null] ? keyedValues[@"externalUserId"] : nil;
     }
     
     return self;
+}
+
+- (NSDictionary *)dictionary {
+    NSDictionary *keyedValues = [self dictionaryWithValuesForKeys:@[@"token", @"externalUserId"]];
+    return keyedValues;
 }
 
 @end
