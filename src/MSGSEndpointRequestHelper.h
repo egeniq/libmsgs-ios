@@ -14,6 +14,9 @@
 - (id)initWithClient:(MSGSClient *)client token:(NSString *)token;
 - (id)initWithClient:(MSGSClient *)client token:(NSString *)token basePath:(NSString *)basePath;
 
+- (void)fetchWithSuccess:(void (^)(MSGSEndpoint *endpoint))success
+                 failure:(void (^)(NSError *error))failure;
+
 - (void)updateWithDictionary:(NSDictionary *)keyedValues
                      success:(void (^)(MSGSEndpoint *endpoint))success
                      failure:(void (^)(NSError *error))failure;

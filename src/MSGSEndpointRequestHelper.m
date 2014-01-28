@@ -20,6 +20,13 @@
     return [super initWithClient:client basePath:basePath];
 }
 
+- (void)fetchWithSuccess:(void (^)(MSGSEndpoint *endpoint))success
+                 failure:(void (^)(NSError *error))failure {
+    [self getPath:nil parameters:nil success:^(id data) {
+        success([[MSGSEndpoint alloc] initWithDictionary:data]);
+    } failure:failure];
+}
+
 - (void)updateWithDictionary:(NSDictionary *)keyedValues
                      success:(void (^)(MSGSEndpoint *endpoint))success
                      failure:(void (^)(NSError *error))failure {
