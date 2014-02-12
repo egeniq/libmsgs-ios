@@ -31,11 +31,11 @@
 - (void)fetchSubscriptionWithChannelCode:(NSString *)channelCode
                                  success:(void (^)(MSGSSubscription *subscription))success
                                  failure:(void (^)(NSError *error))failure {
-    [self.client getPath:[NSString stringWithFormat:@"subscriptions/%@", channelCode]
-              parameters:nil
-                 success:^(id data) {
-                     success([[MSGSSubscription alloc] initWithDictionary:data]);
-                 } failure:failure];
+    [self getPath:[NSString stringWithFormat:@"subscriptions/%@", channelCode]
+       parameters:nil
+          success:^(id data) {
+              success([[MSGSSubscription alloc] initWithDictionary:data]);
+          } failure:failure];
 }
 
 - (void)fetchSubscriptionsWithLimit:(NSNumber *)limit
