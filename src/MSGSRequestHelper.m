@@ -28,49 +28,49 @@
     return self;
 }
 
-- (void)fetchSubscriptionWithChannelCode:(NSString *)channelCode
-                                 success:(void (^)(MSGSSubscription *subscription))success
-                                 failure:(void (^)(NSError *error))failure {
-    [self getPath:[NSString stringWithFormat:@"subscriptions/%@", channelCode]
-       parameters:nil
-          success:^(id data) {
-              success([[MSGSSubscription alloc] initWithDictionary:data]);
-          } failure:failure];
+- (NSOperation *)fetchSubscriptionWithChannelCode:(NSString *)channelCode
+                                          success:(void (^)(MSGSSubscription *subscription))success
+                                          failure:(void (^)(NSError *error))failure {
+    return [self getPath:[NSString stringWithFormat:@"subscriptions/%@", channelCode]
+              parameters:nil
+                 success:^(id data) {
+                     success([[MSGSSubscription alloc] initWithDictionary:data]);
+                 } failure:failure];
 }
 
-- (void)fetchSubscriptionsWithLimit:(NSNumber *)limit
-                             offset:(NSNumber *)offset
-                               sort:(NSArray *)sort
-                            success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
-                            failure:(void (^)(NSError *error))failure {
-    [self fetchSubscriptionsWithChannelCodes:nil tags:nil limit:limit offset:offset sort:sort success:success failure:failure];
+- (NSOperation *)fetchSubscriptionsWithLimit:(NSNumber *)limit
+                                      offset:(NSNumber *)offset
+                                        sort:(NSArray *)sort
+                                     success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
+                                     failure:(void (^)(NSError *error))failure {
+    return [self fetchSubscriptionsWithChannelCodes:nil tags:nil limit:limit offset:offset sort:sort success:success failure:failure];
 }
 
-- (void)fetchSubscriptionsWithChannelCodes:(NSSet *)channelCodes
-                                     limit:(NSNumber *)limit
-                                    offset:(NSNumber *)offset
-                                      sort:(NSArray *)sort
-                                   success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
-                                   failure:(void (^)(NSError *error))failure {
-    [self fetchSubscriptionsWithChannelCodes:channelCodes tags:nil limit:limit offset:offset sort:sort success:success failure:failure];
+- (NSOperation *)fetchSubscriptionsWithChannelCodes:(NSSet *)channelCodes
+                                              limit:(NSNumber *)limit
+                                             offset:(NSNumber *)offset
+                                               sort:(NSArray *)sort
+                                            success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
+                                            failure:(void (^)(NSError *error))failure {
+    return [self fetchSubscriptionsWithChannelCodes:channelCodes tags:nil limit:limit offset:offset sort:sort success:success failure:failure];
 }
 
-- (void)fetchSubscriptionsWithTags:(NSSet *)tags
+- (NSOperation *)fetchSubscriptionsWithTags:(NSSet *)tags
                              limit:(NSNumber *)limit
                             offset:(NSNumber *)offset
                               sort:(NSArray *)sort
                            success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
                            failure:(void (^)(NSError *error))failure {
-    [self fetchSubscriptionsWithChannelCodes:nil tags:tags limit:limit offset:offset sort:sort success:success failure:failure];
+    return [self fetchSubscriptionsWithChannelCodes:nil tags:tags limit:limit offset:offset sort:sort success:success failure:failure];
 }
 
-- (void)fetchSubscriptionsWithChannelCodes:(NSSet *)channelCodes
-                                      tags:(NSSet *)tags
-                                     limit:(NSNumber *)limit
-                                    offset:(NSNumber *)offset
-                                      sort:(NSArray *)sort
-                                   success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
-                                   failure:(void (^)(NSError *error))failure {
+- (NSOperation *)fetchSubscriptionsWithChannelCodes:(NSSet *)channelCodes
+                                               tags:(NSSet *)tags
+                                              limit:(NSNumber *)limit
+                                             offset:(NSNumber *)offset
+                                               sort:(NSArray *)sort
+                                            success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
+                                            failure:(void (^)(NSError *error))failure {
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     
     if (channelCodes != nil) {
@@ -115,70 +115,70 @@
         [params setObject:[sortStrings componentsJoinedByString:@","] forKey:@"sort"];
     }
     
-    [self getPath:@"subscriptions"
-       parameters:params
-          success:^(id data) {
-              NSMutableArray *items = [[NSMutableArray alloc] init];
-              for (id itemData in [data valueForKey:@"items"]) {
-                  [items addObject:[[MSGSSubscription alloc] initWithDictionary:itemData]];
-              }
+    return [self getPath:@"subscriptions"
+              parameters:params
+                 success:^(id data) {
+                     NSMutableArray *items = [[NSMutableArray alloc] init];
+                     for (id itemData in [data valueForKey:@"items"]) {
+                         [items addObject:[[MSGSSubscription alloc] initWithDictionary:itemData]];
+                     }
               
-              BOOL hasMore = NO;
-              if (limit != nil) {
-                  hasMore = (offset != nil ? [offset integerValue] : 0) + [items count] < [[data objectForKey:@"total"] integerValue];
-              }
+                     BOOL hasMore = NO;
+                     if (limit != nil) {
+                         hasMore = (offset != nil ? [offset integerValue] : 0) + [items count] < [[data objectForKey:@"total"] integerValue];
+                     }
               
-              success(items, hasMore);
-          } failure:failure];
+                     success(items, hasMore);
+                 } failure:failure];
 }
 
-- (void)subscribeWithChannelCode:(NSString *)channelCode
-                         success:(void (^)(MSGSSubscription *subscription))success
-                         failure:(void (^)(NSError *error))failure {
-    [self postPath:@"subscriptions"
-        parameters:@{ @"channelCode": channelCode }
-           success:^(id data) {
-               if (success != nil) {
-                   success([[MSGSSubscription alloc] initWithDictionary:data]);
-               }
-            } failure:failure];
+- (NSOperation *)subscribeWithChannelCode:(NSString *)channelCode
+                                  success:(void (^)(MSGSSubscription *subscription))success
+                                  failure:(void (^)(NSError *error))failure {
+    return [self postPath:@"subscriptions"
+               parameters:@{ @"channelCode": channelCode }
+                  success:^(id data) {
+                      if (success != nil) {
+                          success([[MSGSSubscription alloc] initWithDictionary:data]);
+                      }
+                  } failure:failure];
 }
 
-- (void)unsubscribeWithChannelCode:(NSString *)channelCode
-                           success:(void (^)())success
-                           failure:(void (^)(NSError *error))failure {
-    [self deletePath:[NSString stringWithFormat:@"subscriptions/%@", channelCode]
-          parameters:nil
-             success:^(id data) {
-                 if (success != nil) {
-                     success();
-                 }
-             } failure:failure];
+- (NSOperation *)unsubscribeWithChannelCode:(NSString *)channelCode
+                                    success:(void (^)())success
+                                    failure:(void (^)(NSError *error))failure {
+    return [self deletePath:[NSString stringWithFormat:@"subscriptions/%@", channelCode]
+                 parameters:nil
+                    success:^(id data) {
+                        if (success != nil) {
+                            success();
+                        }
+                    } failure:failure];
 }
 
-- (void)getPath:(NSString *)path
-     parameters:(NSDictionary *)params
-        success:(void (^)(id data))success
-        failure:(void (^)(NSError *error))failure {
+- (NSOperation *)getPath:(NSString *)path
+              parameters:(NSDictionary *)params
+                 success:(void (^)(id data))success
+                 failure:(void (^)(NSError *error))failure {
+        path = path == nil ? self.basePath : [NSString stringWithFormat:@"%@/%@", self.basePath, path];
+    return [self.client getPath:path parameters:params success:success failure:failure];
+}
+
+- (NSOperation *)postPath:(NSString *)path
+               parameters:(NSDictionary *)params
+                  success:(void (^)(id data))success
+                  failure:(void (^)(NSError *error))failure {
     path = path == nil ? self.basePath : [NSString stringWithFormat:@"%@/%@", self.basePath, path];
-    [self.client getPath:path parameters:params success:success failure:failure];
-}
-
-- (void)postPath:(NSString *)path
-      parameters:(NSDictionary *)params
-         success:(void (^)(id data))success
-         failure:(void (^)(NSError *error))failure {
-    path = path == nil ? self.basePath : [NSString stringWithFormat:@"%@/%@", self.basePath, path];
-    [self.client postPath:path parameters:params success:success failure:failure];
+    return [self.client postPath:path parameters:params success:success failure:failure];
 }
 
 
-- (void)deletePath:(NSString *)path
-        parameters:(NSDictionary *)params
-           success:(void (^)(id data))success
-           failure:(void (^)(NSError *error))failure {
+- (NSOperation *)deletePath:(NSString *)path
+                 parameters:(NSDictionary *)params
+                    success:(void (^)(id data))success
+                    failure:(void (^)(NSError *error))failure {
     path = path == nil ? self.basePath : [NSString stringWithFormat:@"%@/%@", self.basePath, path];
-    [self.client deletePath:path parameters:params success:success failure:failure];
+    return [self.client deletePath:path parameters:params success:success failure:failure];
 }
 
 @end

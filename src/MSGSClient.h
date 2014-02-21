@@ -23,16 +23,16 @@ FOUNDATION_EXPORT NSString * const MSGSErrorMessageKey;
 
 - (id)initWithBaseURL:(NSURL *)baseURL apiKey:(NSString *)apiKey;
 
-- (void)registerUserWithDictionary:(NSDictionary *)keyedValues
-                           success:(void (^)(MSGSUser *user))success
-                           failure:(void (^)(NSError *error))failure;
+- (NSOperation *)registerUserWithDictionary:(NSDictionary *)keyedValues
+                                    success:(void (^)(MSGSUser *user))success
+                                    failure:(void (^)(NSError *error))failure;
 
 
 - (MSGSUserRequestHelper *)forUserWithToken:(NSString *)token;
 
-- (void)registerEndpointWithDictionary:(NSDictionary *)keyedValues
-                               success:(void (^)(MSGSEndpoint *endpoint))success
-                               failure:(void (^)(NSError *error))failure;
+- (NSOperation *)registerEndpointWithDictionary:(NSDictionary *)keyedValues
+                                        success:(void (^)(MSGSEndpoint *endpoint))success
+                                        failure:(void (^)(NSError *error))failure;
 
 - (MSGSEndpointRequestHelper *)forEndpointWithToken:(NSString *)token;
 

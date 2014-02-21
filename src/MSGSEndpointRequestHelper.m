@@ -20,26 +20,26 @@
     return [super initWithClient:client basePath:basePath];
 }
 
-- (void)fetchWithSuccess:(void (^)(MSGSEndpoint *endpoint))success
-                 failure:(void (^)(NSError *error))failure {
-    [self getPath:nil parameters:nil success:^(id data) {
+- (NSOperation *)fetchWithSuccess:(void (^)(MSGSEndpoint *endpoint))success
+                          failure:(void (^)(NSError *error))failure {
+    return [self getPath:nil parameters:nil success:^(id data) {
         success([[MSGSEndpoint alloc] initWithDictionary:data]);
     } failure:failure];
 }
 
-- (void)updateWithDictionary:(NSDictionary *)keyedValues
-                     success:(void (^)(MSGSEndpoint *endpoint))success
-                     failure:(void (^)(NSError *error))failure {
-    [self postPath:nil parameters:keyedValues success:^(id data) {
+- (NSOperation *)updateWithDictionary:(NSDictionary *)keyedValues
+                              success:(void (^)(MSGSEndpoint *endpoint))success
+                              failure:(void (^)(NSError *error))failure {
+    return [self postPath:nil parameters:keyedValues success:^(id data) {
         if (success != nil) {
             success([[MSGSEndpoint alloc] initWithDictionary:data]);
         }
     } failure:failure];
 }
 
-- (void)deleteWithSuccess:(void (^)())success
-                  failure:(void (^)(NSError *error))failure {
-    [self deletePath:nil parameters:nil success:^(id data) {
+- (NSOperation *)deleteWithSuccess:(void (^)())success
+                           failure:(void (^)(NSError *error))failure {
+    return [self deletePath:nil parameters:nil success:^(id data) {
         if (success != nil) {
             success();
         }

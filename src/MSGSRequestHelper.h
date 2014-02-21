@@ -24,37 +24,37 @@ typedef enum {
 
 - (id)initWithClient:(MSGSClient *)client basePath:(NSString *)basePath;
 
-- (void)fetchSubscriptionWithChannelCode:(NSString *)channelCode
-                                 success:(void (^)(MSGSSubscription *subscription))success
-                                 failure:(void (^)(NSError *error))failure;
+- (NSOperation *)fetchSubscriptionWithChannelCode:(NSString *)channelCode
+                                          success:(void (^)(MSGSSubscription *subscription))success
+                                          failure:(void (^)(NSError *error))failure;
 
-- (void)fetchSubscriptionsWithLimit:(NSNumber *)limit
-                             offset:(NSNumber *)offset
-                               sort:(NSArray *)sort
-                            success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
-                            failure:(void (^)(NSError *error))failure;
+- (NSOperation *)fetchSubscriptionsWithLimit:(NSNumber *)limit
+                                      offset:(NSNumber *)offset
+                                        sort:(NSArray *)sort
+                                     success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
+                                     failure:(void (^)(NSError *error))failure;
 
-- (void)fetchSubscriptionsWithChannelCodes:(NSSet *)channelCodes
-                                     limit:(NSNumber *)limit
-                                    offset:(NSNumber *)offset
-                                      sort:(NSArray *)sort
-                                   success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
-                                   failure:(void (^)(NSError *error))failure;
+- (NSOperation *)fetchSubscriptionsWithChannelCodes:(NSSet *)channelCodes
+                                              limit:(NSNumber *)limit
+                                             offset:(NSNumber *)offset
+                                               sort:(NSArray *)sort
+                                            success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
+                                            failure:(void (^)(NSError *error))failure;
 
-- (void)fetchSubscriptionsWithTags:(NSSet *)tags
-                             limit:(NSNumber *)limit
-                            offset:(NSNumber *)offset
-                              sort:(NSArray *)sort
-                           success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
-                           failure:(void (^)(NSError *error))failure;
+- (NSOperation *)fetchSubscriptionsWithTags:(NSSet *)tags
+                                      limit:(NSNumber *)limit
+                                     offset:(NSNumber *)offset
+                                       sort:(NSArray *)sort
+                                    success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
+                                    failure:(void (^)(NSError *error))failure;
 
 
-- (void)subscribeWithChannelCode:(NSString *)channelCode
-                         success:(void (^)(MSGSSubscription *subscription))success
-                         failure:(void (^)(NSError *error))failure;
+- (NSOperation *)subscribeWithChannelCode:(NSString *)channelCode
+                                  success:(void (^)(MSGSSubscription *subscription))success
+                                  failure:(void (^)(NSError *error))failure;
 
-- (void)unsubscribeWithChannelCode:(NSString *)channelCode
-                           success:(void (^)())success
-                           failure:(void (^)(NSError *error))failure;
+- (NSOperation *)unsubscribeWithChannelCode:(NSString *)channelCode
+                                    success:(void (^)())success
+                                    failure:(void (^)(NSError *error))failure;
 
 @end

@@ -41,16 +41,16 @@ NSString * const MSGSErrorMessageKey = @"MSGSErrorMessageKey";
     return self.client.operationQueue;
 }
 
-- (void)registerUserWithDictionary:(NSDictionary *)keyedValues
+- (NSOperation *)registerUserWithDictionary:(NSDictionary *)keyedValues
                            success:(void (^)(MSGSUser *user))success
                            failure:(void (^)(NSError *error))failure {
-    [self postPath:@"users"
-        parameters:keyedValues
-           success:^(id data) {
-               if (success != nil) {
-                   success([[MSGSUser alloc] initWithDictionary:data]);
-               }
-           } failure:failure];
+    return [self postPath:@"users"
+               parameters:keyedValues
+                  success:^(id data) {
+                      if (success != nil) {
+                          success([[MSGSUser alloc] initWithDictionary:data]);
+                      }
+                  } failure:failure];
 }
 
 
@@ -58,16 +58,16 @@ NSString * const MSGSErrorMessageKey = @"MSGSErrorMessageKey";
     return [[MSGSUserRequestHelper alloc] initWithClient:self token:token];
 }
 
-- (void)registerEndpointWithDictionary:(NSDictionary *)keyedValues
-                               success:(void (^)(MSGSEndpoint *endpoint))success
-                               failure:(void (^)(NSError *error))failure {
-    [self postPath:@"endpoints"
-        parameters:keyedValues
-           success:^(id data) {
-               if (success != nil) {
-                   success([[MSGSEndpoint alloc] initWithDictionary:data]);
-               }
-           } failure:failure];
+- (NSOperation *)registerEndpointWithDictionary:(NSDictionary *)keyedValues
+                                        success:(void (^)(MSGSEndpoint *endpoint))success
+                                        failure:(void (^)(NSError *error))failure {
+    return [self postPath:@"endpoints"
+               parameters:keyedValues
+                  success:^(id data) {
+                      if (success != nil) {
+                          success([[MSGSEndpoint alloc] initWithDictionary:data]);
+                      }
+                  } failure:failure];
 }
 
 - (MSGSEndpointRequestHelper *)forEndpointWithToken:(NSString *)token {
@@ -87,24 +87,14 @@ NSString * const MSGSErrorMessageKey = @"MSGSErrorMessageKey";
     return [NSError errorWithDomain:MSGSErrorDomain code:error.code userInfo:userInfo];
 }
 
-- (void)getPath:(NSString *)path
-     parameters:(NSDictionary *)parameters
-        success:(void (^)(id data))success
-        failure:(void (^)(NSError *error))failure {
-    [self.client getPath:path parameters:parameters success:^(MSGSAFHTTPRequestOperation *operation, id responseObject) {
-        success(responseObject);
-    } failure:^(MSGSAFHTTPRequestOperation *operation, NSError *error) {
-        if (failure != nil) {
-            failure([self processFailureForOperation:operation error:error]);
-        }
-    }];
-}
-
-- (void)postPath:(NSString *)path
-      parameters:(NSDictionary *)parameters
-         success:(void (^)(id data))success
-         failure:(void (^)(NSError *error))failure {
-    [self.client postPath:path parameters:parameters success:^(MSGSAFHTTPRequestOperation *operation, id responseObject) {
+- (NSOperation *)requestWithMethod:(NSString *)method
+                              path:(NSString *)path
+                        parameters:(NSDictionary *)parameters
+                           success:(void (^)(id data))success
+                           failure:(void (^)(NSError *error))failure {
+	NSURLRequest *request = [self.client requestWithMethod:method path:path parameters:parameters];
+    
+    MSGSAFHTTPRequestOperation *operation = [self.client HTTPRequestOperationWithRequest:request success:^(MSGSAFHTTPRequestOperation *operation, id responseObject) {
         if (success != nil) {
             success(responseObject);
         }
@@ -113,21 +103,31 @@ NSString * const MSGSErrorMessageKey = @"MSGSErrorMessageKey";
             failure([self processFailureForOperation:operation error:error]);
         }
     }];
+    
+    [self.client enqueueHTTPRequestOperation:operation];
+    
+    return operation;
 }
 
-- (void)deletePath:(NSString *)path
-        parameters:(NSDictionary *)parameters
-           success:(void (^)(id data))success
-           failure:(void (^)(NSError *error))failure {
-    [self.client deletePath:path parameters:parameters success:^(MSGSAFHTTPRequestOperation *operation, id responseObject) {
-        if (success != nil) {
-            success(responseObject);
-        }
-    } failure:^(MSGSAFHTTPRequestOperation *operation, NSError *error) {
-        if (failure != nil) {
-            failure([self processFailureForOperation:operation error:error]);
-        }
-    }];
+- (NSOperation *)getPath:(NSString *)path
+              parameters:(NSDictionary *)parameters
+                 success:(void (^)(id data))success
+                 failure:(void (^)(NSError *error))failure {
+    return [self requestWithMethod:@"GET" path:path parameters:parameters success:success failure:failure];
+}
+
+- (NSOperation *)postPath:(NSString *)path
+               parameters:(NSDictionary *)parameters
+                  success:(void (^)(id data))success
+                  failure:(void (^)(NSError *error))failure {
+    return [self requestWithMethod:@"POST" path:path parameters:parameters success:success failure:failure];
+}
+
+- (NSOperation *)deletePath:(NSString *)path
+                 parameters:(NSDictionary *)parameters
+                    success:(void (^)(id data))success
+                    failure:(void (^)(NSError *error))failure {
+    return [self requestWithMethod:@"DELETE" path:path parameters:parameters success:success failure:failure];
 }
 
 @end

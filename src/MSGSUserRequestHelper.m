@@ -15,22 +15,22 @@
     return [super initWithClient:client basePath:[NSString stringWithFormat:@"users/%@", token]];
 }
 
-- (void)registerEndpointWithDictionary:(NSDictionary *)keyedValues
-                               success:(void (^)(MSGSEndpoint *endpoint))success
-                               failure:(void (^)(NSError *error))failure {
-    [self postPath:@"endpoints"
-        parameters:keyedValues
-           success:^(id data) {
-               if (success != nil) {
-                   success([[MSGSEndpoint alloc] initWithDictionary:data]);
-               }
-           } failure:failure];
+- (NSOperation *)registerEndpointWithDictionary:(NSDictionary *)keyedValues
+                                        success:(void (^)(MSGSEndpoint *endpoint))success
+                                        failure:(void (^)(NSError *error))failure {
+    return [self postPath:@"endpoints"
+               parameters:keyedValues
+                  success:^(id data) {
+                      if (success != nil) {
+                          success([[MSGSEndpoint alloc] initWithDictionary:data]);
+                      }
+                  } failure:failure];
 }
 
-- (void)fetchEndpointsWithLimit:(NSNumber *)limit
-                         offset:(NSNumber *)offset
-                        success:(void (^)(NSArray *endpoints, BOOL hasMore))success
-                        failure:(void (^)(NSError *error))failure {
+- (NSOperation *)fetchEndpointsWithLimit:(NSNumber *)limit
+                                  offset:(NSNumber *)offset
+                                 success:(void (^)(NSArray *endpoints, BOOL hasMore))success
+                                 failure:(void (^)(NSError *error))failure {
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     
     if (limit != nil) {
@@ -38,21 +38,21 @@
         [params setObject:offset != nil ? offset : @(0) forKey:@"offset"];
     }
     
-    [self getPath:@"endpoints"
-       parameters:params
-          success:^(id data) {
-              NSMutableArray *items = [[NSMutableArray alloc] init];
-              for (id itemData in [data valueForKey:@"items"]) {
-                  [items addObject:[[MSGSEndpoint alloc] initWithDictionary:itemData]];
-              }
+    return [self getPath:@"endpoints"
+              parameters:params
+                 success:^(id data) {
+                     NSMutableArray *items = [[NSMutableArray alloc] init];
+                     for (id itemData in [data valueForKey:@"items"]) {
+                         [items addObject:[[MSGSEndpoint alloc] initWithDictionary:itemData]];
+                     }
               
-              BOOL hasMore = NO;
-              if (limit != nil) {
-                  hasMore = (offset != nil ? [offset integerValue] : 0) + [items count] < [[data objectForKey:@"total"] integerValue];
-              }
+                     BOOL hasMore = NO;
+                     if (limit != nil) {
+                         hasMore = (offset != nil ? [offset integerValue] : 0) + [items count] < [[data objectForKey:@"total"] integerValue];
+                     }
 
-              success(items, hasMore);
-          } failure:failure];
+                     success(items, hasMore);
+                 } failure:failure];
 }
 
 - (MSGSEndpointRequestHelper *)forEndpointWithToken:(NSString *)token {

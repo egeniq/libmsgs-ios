@@ -14,14 +14,14 @@
 - (id)initWithClient:(MSGSClient *)client token:(NSString *)token;
 - (id)initWithClient:(MSGSClient *)client token:(NSString *)token basePath:(NSString *)basePath;
 
-- (void)fetchWithSuccess:(void (^)(MSGSEndpoint *endpoint))success
-                 failure:(void (^)(NSError *error))failure;
+- (NSOperation *)fetchWithSuccess:(void (^)(MSGSEndpoint *endpoint))success
+                          failure:(void (^)(NSError *error))failure;
 
-- (void)updateWithDictionary:(NSDictionary *)keyedValues
-                     success:(void (^)(MSGSEndpoint *endpoint))success
-                     failure:(void (^)(NSError *error))failure;
+- (NSOperation *)updateWithDictionary:(NSDictionary *)keyedValues
+                              success:(void (^)(MSGSEndpoint *endpoint))success
+                              failure:(void (^)(NSError *error))failure;
 
-- (void)deleteWithSuccess:(void (^)())success
-                  failure:(void (^)(NSError *error))failure;
+- (NSOperation *)deleteWithSuccess:(void (^)())success
+                           failure:(void (^)(NSError *error))failure;
 
 @end
