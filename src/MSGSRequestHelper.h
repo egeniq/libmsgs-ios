@@ -34,7 +34,14 @@ typedef enum {
                             success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
                             failure:(void (^)(NSError *error))failure;
 
-- (void)fetchSubscriptionsWithTags:(NSArray *)tags
+- (void)fetchSubscriptionsWithChannelCodes:(NSSet *)channelCodes
+                                     limit:(NSNumber *)limit
+                                    offset:(NSNumber *)offset
+                                      sort:(NSArray *)sort
+                                   success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
+                                   failure:(void (^)(NSError *error))failure;
+
+- (void)fetchSubscriptionsWithTags:(NSSet *)tags
                              limit:(NSNumber *)limit
                             offset:(NSNumber *)offset
                               sort:(NSArray *)sort

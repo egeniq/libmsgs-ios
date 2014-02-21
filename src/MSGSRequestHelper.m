@@ -43,19 +43,42 @@
                                sort:(NSArray *)sort
                             success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
                             failure:(void (^)(NSError *error))failure {
-    [self fetchSubscriptionsWithTags:nil limit:limit offset:offset sort:sort success:success failure:failure];
+    [self fetchSubscriptionsWithChannelCodes:nil tags:nil limit:limit offset:offset sort:sort success:success failure:failure];
 }
 
-- (void)fetchSubscriptionsWithTags:(NSArray *)tags
+- (void)fetchSubscriptionsWithChannelCodes:(NSSet *)channelCodes
+                                     limit:(NSNumber *)limit
+                                    offset:(NSNumber *)offset
+                                      sort:(NSArray *)sort
+                                   success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
+                                   failure:(void (^)(NSError *error))failure {
+    [self fetchSubscriptionsWithChannelCodes:channelCodes tags:nil limit:limit offset:offset sort:sort success:success failure:failure];
+}
+
+- (void)fetchSubscriptionsWithTags:(NSSet *)tags
                              limit:(NSNumber *)limit
                             offset:(NSNumber *)offset
                               sort:(NSArray *)sort
                            success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
                            failure:(void (^)(NSError *error))failure {
+    [self fetchSubscriptionsWithChannelCodes:nil tags:tags limit:limit offset:offset sort:sort success:success failure:failure];
+}
+
+- (void)fetchSubscriptionsWithChannelCodes:(NSSet *)channelCodes
+                                      tags:(NSSet *)tags
+                                     limit:(NSNumber *)limit
+                                    offset:(NSNumber *)offset
+                                      sort:(NSArray *)sort
+                                   success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
+                                   failure:(void (^)(NSError *error))failure {
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     
+    if (channelCodes != nil) {
+        [params setObject:[[channelCodes allObjects] componentsJoinedByString:@","] forKey:@"channelCodes"];
+    }
+    
     if (tags != nil) {
-        [params setObject:[tags componentsJoinedByString:@","] forKey:@"tags"];
+        [params setObject:[[tags allObjects] componentsJoinedByString:@","] forKey:@"tags"];
     }
     
     if (limit != nil) {
