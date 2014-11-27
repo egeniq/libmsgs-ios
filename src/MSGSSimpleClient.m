@@ -129,7 +129,7 @@
                            success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
                            failure:(void (^)(NSError *error))failure {
     [self requireEndpointTokenOnFailure:failure];
-    [[self.client forEndpointWithToken:self.endpoint.token] fetchSubscriptionsWithTags:tags limit:limit offset:offset sort:sort success:success failure:failure];
+    [[self.client forEndpointWithToken:self.endpoint.token] fetchSubscriptionsWithTags:[NSSet setWithArray:tags] limit:limit offset:offset sort:sort success:success failure:failure];
 }
 
 
