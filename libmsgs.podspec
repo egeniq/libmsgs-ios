@@ -53,7 +53,7 @@ Pod::Spec.new do |s|
   #  profile URL.
   #
 
-  s.author             = { "Peter Verhane" => "peter@egeniq.com" }
+  s.author             = { "Peter Verhage" => "peter@egeniq.com" }
   # Or just: s.author    = "Johan Kool"
   # s.authors            = { "Johan Kool" => "johan@koolistov.net" }
   # s.social_media_url   = "http://twitter.com/Johan Kool"
@@ -90,7 +90,7 @@ Pod::Spec.new do |s|
   #
 
   s.source_files  = "src/**/*.{h,m}"
-  s.exclude_files = "Classes/Exclude"
+  # s.exclude_files = "Classes/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"
 
