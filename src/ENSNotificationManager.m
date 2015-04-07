@@ -382,8 +382,10 @@ static ENSNotificationManager *sharedInstance = nil;
 - (void)loadArrayForLocation:(NSString *)location params:(NSDictionary *)params onComplete:(void(^)(NSArray *list))onComplete onError:(void(^)(NSString *errorCode, NSString *errorMessage))onError {
     NSURLRequest *request = [self.client requestWithMethod:@"GET" path:location parameters:params];
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id result) {
+        NSLog(@"loadArrayForLocation, response: %@", result);
         onComplete((NSArray *)result);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id result) {
+        NSLog(@"loadArrayForLocation, error response: %@ / error: %@", result, error);
         if (result != nil) {
             onError(result[@"code"], result[@"message"]);
         } else {
