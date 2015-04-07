@@ -211,6 +211,7 @@ static ENSNotificationManager *sharedInstance = nil;
     }
     
     [self postToLocation:location params:params onComplete:^(NSDictionary *result) {
+        NSLog(@"subscribeToChannel: %@, result: %@", channelIdentifier, result);
         onComplete(result[@"subscriptionId"]);
     } onError:^(NSString *errorCode, NSString *errorMessage) {
         onError(errorCode, errorMessage);
@@ -364,8 +365,10 @@ static ENSNotificationManager *sharedInstance = nil;
 - (void)postToLocation:(NSString *)location params:(NSDictionary *)params onComplete:(void(^)(id result))onComplete onError:(void(^)(NSString *errorCode, NSString *errorMessage))onError {
     NSURLRequest *request = [self.client requestWithMethod:@"POST" path:location parameters:params];
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id result) {
+        NSLog(@"postToLocation, response: %@", result);
         onComplete(result);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id result) {
+        NSLog(@"postToLocation, error response: %@ / error: %@", result, error);
         if (result != nil) {
             onError(result[@"code"], result[@"message"]);
         } else {
