@@ -31,7 +31,9 @@
                               sort:(NSArray *)sort
                            success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
                            failure:(void (^)(NSError *error))failure;
-
+- (void)countSubscriptionsWithTags:(NSArray *)tags
+                           success:(void (^)(NSInteger count))success
+                           failure:(void (^)(NSError *error))failure;
 
 - (void)subscribeWithChannelCode:(NSString *)channelCode
                          success:(void (^)(MSGSSubscription *subscription))success

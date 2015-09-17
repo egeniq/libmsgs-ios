@@ -132,6 +132,27 @@
                  } failure:failure];
 }
 
+
+- (NSOperation *)countSubscriptionsWithTags:(NSSet *)tags
+                                    success:(void (^)(NSInteger count))success
+                                    failure:(void (^)(NSError *error))failure {
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+
+    if (tags != nil) {
+        [params setObject:[[tags allObjects] componentsJoinedByString:@","] forKey:@"tags"];
+    }
+    [params setObject:@0 forKey:@"limit"];
+    [params setObject:@0 forKey:@"offset"];
+
+    return [self getPath:@"subscriptions"
+              parameters:params
+                 success:^(id data) {
+                     NSInteger count = [[data objectForKey:@"total"] integerValue];
+                     success(count);
+                 } failure:failure];
+}
+
+
 - (NSOperation *)subscribeWithChannelCode:(NSString *)channelCode
                                   success:(void (^)(MSGSSubscription *subscription))success
                                   failure:(void (^)(NSError *error))failure {

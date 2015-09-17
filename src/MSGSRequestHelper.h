@@ -48,6 +48,9 @@ typedef enum {
                                     success:(void (^)(NSArray *subscriptions, BOOL hasMore))success
                                     failure:(void (^)(NSError *error))failure;
 
+- (NSOperation *)countSubscriptionsWithTags:(NSSet *)tags
+                                    success:(void (^)(NSInteger count))success
+                                    failure:(void (^)(NSError *error))failure;
 
 - (NSOperation *)subscribeWithChannelCode:(NSString *)channelCode
                                   success:(void (^)(MSGSSubscription *subscription))success
