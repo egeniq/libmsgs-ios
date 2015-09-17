@@ -132,6 +132,12 @@
     [[self.client forEndpointWithToken:self.endpoint.token] fetchSubscriptionsWithTags:[NSSet setWithArray:tags] limit:limit offset:offset sort:sort success:success failure:failure];
 }
 
+- (void)countSubscriptionsWithTags:(NSArray *)tags
+                           success:(void (^)(NSInteger count))success
+                           failure:(void (^)(NSError *error))failure {
+    [self requireEndpointTokenOnFailure:failure];
+    [[self.client forEndpointWithToken:self.endpoint.token] countSubscriptionsWithTags:[NSSet setWithArray:tags] success:success failure:failure];
+}
 
 - (void)subscribeWithChannelCode:(NSString *)channelCode
                          success:(void (^)(MSGSSubscription *subscription))success
