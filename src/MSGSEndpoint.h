@@ -16,6 +16,7 @@
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, strong) NSNumber *endpointSubscriptionsActive;
 @property (nonatomic, strong) NSNumber *userSubscriptionsActive;
+@property (nonatomic, copy) NSString *deliveryFrequency;
 @property (nonatomic, strong) id data;
 
 - (instancetype)init;
