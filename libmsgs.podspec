@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "libmsgs"
-  s.version      = "0.2.1"
+  s.version      = "0.2.2"
   s.summary      = "Msgs.io library for iOS"
 
   s.description  = <<-DESC
