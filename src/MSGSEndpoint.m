@@ -29,7 +29,7 @@
         self.name = keyedValues[@"name"] != [NSNull null] ? keyedValues[@"name"] : nil;
         self.endpointSubscriptionsActive = keyedValues[@"endpointSubscriptionsActive"] != [NSNull null] ? keyedValues[@"endpointSubscriptionsActive"] : nil;
         self.userSubscriptionsActive = keyedValues[@"userSubscriptionsActive"] != [NSNull null] ? keyedValues[@"userSubscriptionsActive"] : nil;
-        self.deliveryFrequency = keyedValues[@"deliveryFrequency"] != [NSNull null] ? keyedValues[@"name"] : nil;
+        self.deliveryFrequency = keyedValues[@"deliveryFrequency"] != [NSNull null] ? keyedValues[@"deliveryFrequency"] : nil;
         self.data = keyedValues[@"data"] != [NSNull null] ? keyedValues[@"data"] : nil;
     }
     
