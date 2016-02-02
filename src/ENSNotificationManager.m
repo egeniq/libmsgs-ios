@@ -70,14 +70,18 @@ static ENSNotificationManager *sharedInstance = nil;
     
     NSString *escapedDeviceToken = [self hexStringFromDeviceToken:deviceToken];
     
+    NSLog(@"Register device with device token: %@", escapedDeviceToken);
+    
     if ([self.deviceToken isEqualToString:escapedDeviceToken] && self.notificationToken != nil) {
         // Same device token as previous time and we already have a notification token,
         // stopping to reduce server load unless the notification token on file is too old
         if (((self.lastRegisterChannelIdentifier == nil && channelIdentifier == nil) || [self.lastRegisterChannelIdentifier isEqual:channelIdentifier]) && self.updatedAt != nil && [[NSDate date] timeIntervalSinceDate:self.updatedAt] < kENSNotificationManagerTokenTimeout) {
+            NSLog(@"Device token is equal to old one, don't register (notification token: %@).", self.notificationToken);
             return;
         }
     } else {
         // Different device token (perhaps user synced preferences to another/new device)
+        NSLog(@"Registering device for the first time, or device token has changed (notification token: %@).", self.notificationToken);
         self.deviceToken = escapedDeviceToken;
     }
     
@@ -102,6 +106,7 @@ static ENSNotificationManager *sharedInstance = nil;
         
         if (object != nil && [object valueForKey:@"notificationToken"] != nil) {
             self.notificationToken = [object valueForKey:@"notificationToken"];
+            NSLog(@"Device with device token %@ registered. Notification token: %@.", escapedDeviceToken, self.notificationToken);
         }
         
         if (onComplete != nil) {
