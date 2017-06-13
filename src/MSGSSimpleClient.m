@@ -67,7 +67,6 @@
 #pragma mark Manage endpoint
 
 - (void)registerEndpointWithDeviceToken:(NSData *)deviceToken
-                           endpointType:(NSString *)endpointType
                                 success:(void (^)(MSGSEndpoint *endpoint))success
                                 failure:(void (^)(NSError *error))failure {
     [self registerEndpointWithDeviceToken:deviceToken
