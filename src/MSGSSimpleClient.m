@@ -67,6 +67,17 @@
 #pragma mark Manage endpoint
 
 - (void)registerEndpointWithDeviceToken:(NSData *)deviceToken
+                           endpointType:(NSString *)endpointType
+                                success:(void (^)(MSGSEndpoint *endpoint))success
+                                failure:(void (^)(NSError *error))failure {
+    [self registerEndpointWithDeviceToken:deviceToken
+                             endpointType:[MSGSUtil deviceType]
+                                  success:success
+                                 failure:failure];
+}
+
+- (void)registerEndpointWithDeviceToken:(NSData *)deviceToken
+                           endpointType:(NSString *)endpointType
                                 success:(void (^)(MSGSEndpoint *endpoint))success
                                 failure:(void (^)(NSError *error))failure {
     NSString *address = [MSGSUtil hexStringForData:deviceToken];
@@ -76,7 +87,7 @@
     }
     
     if (self.endpoint == nil) {
-        NSDictionary *keyedValues = @{ @"type": [MSGSUtil deviceType], @"address": address, @"name": [MSGSUtil deviceName] };
+        NSDictionary *keyedValues = @{ @"type": endpointType, @"address": address, @"name": [MSGSUtil deviceName] };
         [self.client registerEndpointWithDictionary:keyedValues success:^(MSGSEndpoint *endpoint) {
             self.endpoint = endpoint;
             success(endpoint);

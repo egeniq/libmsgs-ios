@@ -16,6 +16,11 @@
                                 success:(void (^)(MSGSEndpoint *endpoint))success
                                 failure:(void (^)(NSError *error))failure;
 
+- (void)registerEndpointWithDeviceToken:(NSData *)deviceToken
+                           endpointType:(NSString *)endpointType
+                                success:(void (^)(MSGSEndpoint *endpoint))success
+                                failure:(void (^)(NSError *error))failure;
+
 - (void)fetchSubscriptionWithChannelCode:(NSString *)channelCode
                                  success:(void (^)(MSGSSubscription *subscription))success
                                  failure:(void (^)(NSError *error))failure;
