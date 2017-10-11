@@ -6,12 +6,13 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import <UserNotifications/UserNotifications.h>
 #import "AppDelegate.h"
 
 #import "RootViewController.h"
 #import "MSGSSimpleClient.h"
 
-@interface AppDelegate()
+@interface AppDelegate() <UNUserNotificationCenterDelegate>
 
 - (void)setupPushNotificationsForApplication:(UIApplication *)application;
 
@@ -68,12 +69,20 @@
 
 - (void)setupPushNotificationsForApplication:(UIApplication *)application {
 #if !TARGET_IPHONE_SIMULATOR
-    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound];
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    center.delegate = self;
+    [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error){
+        if (!error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [application registerForRemoteNotifications];
+            });
+        }
+    }];
 #endif
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-	[[MSGSSimpleClient sharedInstance] registerEndpointWithDeviceToken:deviceToken success:^(MSGSEndpoint *endpoint) {
+    [[MSGSSimpleClient sharedInstance] registerEndpointWithDeviceToken:deviceToken endpointType:@"ios" success:^(MSGSEndpoint *endpoint) {
         // silently celebrate :)
     } failure:^(NSError *error) {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"Ok") otherButtonTitles:nil, nil] show];
@@ -85,16 +94,9 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)info {
-    NSString *message = nil;
-    id alert = [info objectForKey:@"aps"];
-    if ([alert isKindOfClass:[NSString class]]) {
-        message = alert;
-    } else if ([alert isKindOfClass:[NSDictionary class]]) {
-        message = [alert objectForKey:@"alert"];
-    }
-    if (message) {
-        [[[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"Ok") otherButtonTitles:nil, nil] show];
-    }
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:info options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    [[[UIAlertView alloc] initWithTitle:nil message:jsonString delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok", @"Ok") otherButtonTitles:nil, nil] show];
 }
 
 @end

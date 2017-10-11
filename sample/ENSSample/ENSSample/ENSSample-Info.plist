@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>io.msgs.ios.sample</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -25,9 +25,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MSGSAPIKey</key>
-	<string>YOUR_API_KEY_HERE</string>
+	<string>b9d5af380805ab4f29799b4ae63f93428f988e60d57d2b4bc2384dfa2e412965</string>
 	<key>MSGSAPIURL</key>
-	<string>http://api.msgs.io/v2/</string>
+	<string>http://192.168.0.86:9081</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
