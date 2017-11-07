@@ -157,7 +157,7 @@
 }
 
 - (void)unsubscribeWithChannelCode:(NSString *)channelCode
-                           success:(void (^)())success
+                           success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure {
     [self requireEndpointTokenOnFailure:failure];
     [[self.client forEndpointWithToken:self.endpoint.token] unsubscribeWithChannelCode:channelCode success:success failure:failure];

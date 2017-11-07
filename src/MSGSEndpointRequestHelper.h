@@ -21,7 +21,7 @@
                               success:(void (^)(MSGSEndpoint *endpoint))success
                               failure:(void (^)(NSError *error))failure;
 
-- (NSOperation *)deleteWithSuccess:(void (^)())success
+- (NSOperation *)deleteWithSuccess:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure;
 
 @end

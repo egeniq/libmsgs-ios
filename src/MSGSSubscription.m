@@ -7,6 +7,7 @@
 //
 
 #import "MSGSSubscription.h"
+#import "MSGSUtil.h"
 
 @implementation MSGSSubscription
 
@@ -20,6 +21,8 @@
     if (self != nil) {
         if (keyedValues[@"channel"] != nil && keyedValues[@"channel"] != [NSNull null]) {
             self.channel = [[MSGSChannel alloc] initWithDictionary:keyedValues[@"channel"]];
+            self.createdAt = [MSGSUtil dateFromString:keyedValues[@"createdAt"] != [NSNull null] ? keyedValues[@"createdAt"] : nil];
+            self.updatedAt = [MSGSUtil dateFromString:keyedValues[@"updatedAt"] != [NSNull null] ? keyedValues[@"updatedAt"] : nil];
         }
     }
     

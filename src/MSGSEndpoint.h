@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSNumber *userSubscriptionsActive;
 @property (nonatomic, copy) NSString *deliveryFrequency;
 @property (nonatomic, strong) id data;
+@property (nonatomic, strong) NSDate *updatedAt;
 
 - (instancetype)init;
 - (instancetype)initWithDictionary:(NSDictionary *)keyedValues;
