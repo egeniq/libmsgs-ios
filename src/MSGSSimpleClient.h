@@ -45,6 +45,6 @@
                          failure:(void (^)(NSError *error))failure;
 
 - (void)unsubscribeWithChannelCode:(NSString *)channelCode
-                           success:(void (^)())success
+                           success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure;
 @end

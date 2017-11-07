@@ -7,6 +7,7 @@
 //
 
 #import "MSGSEndpoint.h"
+#import "MSGSUtil.h"
 
 @implementation MSGSEndpoint
 
@@ -31,6 +32,7 @@
         self.userSubscriptionsActive = keyedValues[@"userSubscriptionsActive"] != [NSNull null] ? keyedValues[@"userSubscriptionsActive"] : nil;
         self.deliveryFrequency = keyedValues[@"deliveryFrequency"] != [NSNull null] ? keyedValues[@"deliveryFrequency"] : nil;
         self.data = keyedValues[@"data"] != [NSNull null] ? keyedValues[@"data"] : nil;
+        self.updatedAt = [MSGSUtil dateFromString:keyedValues[@"updatedAt"] != [NSNull null] ? keyedValues[@"updatedAt"] : nil];
     }
     
     return self;

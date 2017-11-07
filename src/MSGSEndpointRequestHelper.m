@@ -37,7 +37,7 @@
     } failure:failure];
 }
 
-- (NSOperation *)deleteWithSuccess:(void (^)())success
+- (NSOperation *)deleteWithSuccess:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure {
     return [self deletePath:nil parameters:nil success:^(id data) {
         if (success != nil) {

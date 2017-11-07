@@ -14,5 +14,6 @@
 + (NSString *)deviceName;
 + (NSString *)hexStringForData:(NSData *)data;
 + (NSDictionary *)dictionaryWithoutNullValues:(NSDictionary *)keyedValues;
++ (NSDate *)dateFromString:(NSString *)string;
 
 @end

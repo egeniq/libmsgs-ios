@@ -11,6 +11,8 @@
 @interface MSGSSubscription : NSObject
 
 @property (nonatomic, strong) MSGSChannel *channel;
+@property (nonatomic, strong) NSDate *createdAt;
+@property (nonatomic, strong) NSDate *updatedAt;
 
 - (instancetype)init;
 - (instancetype)initWithDictionary:(NSDictionary *)keyedValues;

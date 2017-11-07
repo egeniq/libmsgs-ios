@@ -166,7 +166,7 @@
 }
 
 - (NSOperation *)unsubscribeWithChannelCode:(NSString *)channelCode
-                                    success:(void (^)())success
+                                    success:(void (^)(void))success
                                     failure:(void (^)(NSError *error))failure {
     return [self deletePath:[NSString stringWithFormat:@"subscriptions/%@", channelCode]
                  parameters:nil

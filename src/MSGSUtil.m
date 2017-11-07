@@ -51,4 +51,13 @@
     return result;
 }
 
++ (NSDate *)dateFromString:(NSString *)string {
+    static NSDateFormatter *dateFormatter = nil;
+    if (!dateFormatter) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
+    }
+    return [dateFormatter dateFromString:string];
+}
+
 @end
