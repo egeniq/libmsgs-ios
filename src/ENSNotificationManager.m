@@ -452,7 +452,7 @@ static ENSNotificationManager *sharedInstance = nil;
 }
 
 - (NSString *)appId {
-    return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENSAppId"];
+    return self.notificationAppId ?: [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENSAppId"];
 }
 
 #pragma mark -

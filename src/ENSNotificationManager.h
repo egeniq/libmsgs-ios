@@ -13,6 +13,8 @@
 
 + (ENSNotificationManager *)sharedInstance;
 
+@property (nonatomic, copy) NSString *notificationAppId;
+
 - (void)registerDevice:(NSData *)deviceToken;
 - (void)registerDevice:(NSData *)deviceToken onComplete:(void(^)(NSString *deviceToken))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
 - (void)registerDevice:(NSData *)deviceToken channelIdentifier:(NSString *)channelIdentifier onComplete:(void (^)(NSString *notificationToken))onComplete onError:(void (^)(NSString *errorCode, NSString *errorMessage))onError;
